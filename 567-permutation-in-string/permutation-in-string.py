@@ -29,9 +29,7 @@ class Solution:
                 x-=1
                 dic[ch] = x
             
-            print(l, r, dic)
             if(max(dic.values())==0):
-                print(l, r, dic)
                 return True
         return False
         
