@@ -2,11 +2,9 @@ class Solution:
     def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
         s = 0
         ans = 0
-        dic = {}
+        dic = {0:1}
         for e in nums:
             s+=e
-            if(s==goal):
-                ans+=1
             rem = s - goal
             if(rem in dic):
                 ans += dic[rem]
