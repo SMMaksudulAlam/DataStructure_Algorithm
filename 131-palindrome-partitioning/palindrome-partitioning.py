@@ -3,10 +3,12 @@ class Solution:
 
         def isPal(s):
             return s == s[::-1]
-
+        dic = {}
         def part(s):
             if(not s):
                 return [[]]
+            if(s in dic):
+                return dic[s]
             ans = []
             for i in range(len(s)):
                 if(isPal(s[:i+1])):
@@ -16,6 +18,7 @@ class Solution:
                     for post in postList:
                         tempAns.append([pre]+post)
                     ans+=tempAns
+            dic[s] = ans
             return ans
         ans = part(s)
         return ans
