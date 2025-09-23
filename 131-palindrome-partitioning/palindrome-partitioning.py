@@ -1,24 +1,21 @@
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
-        ans = []
-        def ispal(s):
+
+        def isPal(s):
             return s == s[::-1]
-        dic = {}
-        def build(s):
+
+        def part(s):
             if(not s):
                 return [[]]
-            if(s in dic):
-                return dic[s]
-            ans_comb = []
+            ans = []
             for i in range(len(s)):
-                if(ispal(s[:i+1])):
-                    ans = build(s[i+1:])
-                    for a in ans:
-                        ans_comb.append([s[:i+1]] + a)
-            dic[s] = ans_comb
-            return ans_comb
-
-            
-
-        ans = build(s)
+                if(isPal(s[:i+1])):
+                    tempAns = []
+                    pre = s[:i+1]
+                    postList = part(s[i+1:])
+                    for post in postList:
+                        tempAns.append([pre]+post)
+                    ans+=tempAns
+            return ans
+        ans = part(s)
         return ans
