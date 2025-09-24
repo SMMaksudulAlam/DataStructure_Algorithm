@@ -7,14 +7,12 @@ class Solution:
             dic_ = {}
             for k in dic.keys():
                 k_ = k+e
-                dic_[k_] = dic_.get(k_, 0) + dic.get(k, 0)
+                dic_[k_] = dic_.get(k_, 0) + dic[k]
                 k_ = k-e
-                dic_[k_] = dic_.get(k_, 0)  + dic.get(k, 0)
+                dic_[k_] = dic_.get(k_, 0)  + dic[k]
             dic = dic_
 
         ans = 0
         if(target in dic):
             ans = dic[target]
         return ans
-
-        
