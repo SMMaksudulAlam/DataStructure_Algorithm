@@ -17,16 +17,14 @@ class Solution:
             x, y = points[i]
 
             y_min_limit = -inf
-            y_max_limit = y+1
 
             for j in range(i+1, len(points)):
                 x_, y_ = points[j]
-                if(y_>=y_max_limit):
+                if(y_>y):
                     continue
-                if(y_min_limit < y_ < y_max_limit):
+                if(y_min_limit < y_ <= y):
                     count += 1
-                if(y_<=y):
-                    y_min_limit = max(y_min_limit, y_)
+                    y_min_limit = y_
 
         return count
 
