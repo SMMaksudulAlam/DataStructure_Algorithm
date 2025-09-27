@@ -1,31 +1,37 @@
 import heapq as hq
 class Solution:
     def numberOfPairs(self, points: List[List[int]]) -> int:
+        points.sort(key = lambda x:x[0])
         h = []
-        ln = len(points)
         for x, y in points:
-            hq.heappush(h, (x, -y))
+            h.append((x, -y))
         
+        hq.heapify(h)
         points = []
         while(h):
             x, y = hq.heappop(h)
-            y = -y
-            points.append([x, y])
+            points.append((x, -y))
 
         #print(points)
-        
         count = 0
-        for i in range(ln-1):
-            y1 = points[i][1]
-            for j in range(i+1, ln):
-                y2 = points[j][1]
-                if(y1>=y2):
-                    isThere = False
-                    for k in range(i+1, j):
-                        y3 = points[k][1]
-                        if(y2<=y3<=y1):
-                            isThere = True
-                            break
-                    if(not isThere):
-                        count+=1
+        for i in range(len(points)):
+            x, y = points[i]
+
+            x_min_limit = -inf
+            
+            y_min_limit = -inf
+            y_max_limit = y+1
+
+            for j in range(i+1, len(points)):
+                x_, y_ = points[j]
+                if(y_>=y_max_limit):
+                    continue
+                if(x_>x_min_limit and y_min_limit < y_ < y_max_limit):
+                    count += 1
+                x_min_limit = x_
+                if(y_<=y):
+                    y_min_limit = max(y_min_limit, y_)
+            #print(x, y, count)
         return count
+
+
