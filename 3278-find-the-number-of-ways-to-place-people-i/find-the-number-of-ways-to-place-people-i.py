@@ -12,13 +12,10 @@ class Solution:
             x, y = hq.heappop(h)
             points.append((x, -y))
 
-        #print(points)
         count = 0
         for i in range(len(points)):
             x, y = points[i]
 
-            x_min_limit = -inf
-            
             y_min_limit = -inf
             y_max_limit = y+1
 
@@ -26,12 +23,11 @@ class Solution:
                 x_, y_ = points[j]
                 if(y_>=y_max_limit):
                     continue
-                if(x_>x_min_limit and y_min_limit < y_ < y_max_limit):
+                if(y_min_limit < y_ < y_max_limit):
                     count += 1
-                x_min_limit = x_
                 if(y_<=y):
                     y_min_limit = max(y_min_limit, y_)
-            #print(x, y, count)
+
         return count
 
 
