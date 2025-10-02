@@ -12,11 +12,11 @@ class Solution:
             cur = cur.next
 
         goTill = count-n
-        if(goTill==0):
-            return head.next
 
-        count = 1
-        cur = head
+        dummy_head = ListNode()
+        dummy_head.next = head
+        count = 0
+        cur = dummy_head
 
         while(count<goTill):
             cur = cur.next
@@ -24,4 +24,4 @@ class Solution:
         
         cur.next = cur.next.next
 
-        return head
+        return dummy_head.next
