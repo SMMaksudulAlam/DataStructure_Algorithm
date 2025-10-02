@@ -1,26 +1,38 @@
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        if(matrix[0][0]>target or matrix[-1][-1]<target):
+            return False
         s = 0
-        e = len(matrix)-1
-        r = -1
+        rows = len(matrix)
+        cols = len(matrix[0])
+        e = rows*cols
+
         while(s<=e):
             if(s==e):
-                r = s
-                break
+                row = s//cols
+                col = s%cols
+                if(matrix[row][col]==target):
+                    return True
+                return False
+            
             if(s+1==e):
-                if(target<matrix[e][0]):
-                    r = s
-                else:
-                    r = e
-                break
-
-            m = (s+e)//2
-            if(target>=matrix[m][0]):
-                s = m
+                row = s//cols
+                col = s%cols
+                if(matrix[row][col]==target):
+                    return True
+                row = e//cols
+                col = e%cols
+                if(matrix[row][col]==target):
+                    return True
+                return False
+            
+            mid = (s+e)//2
+            row = mid//cols
+            col = mid%cols
+            if(matrix[row][col]>=target):
+                e = mid
             else:
-                e = m
-        
-        ind = bisect.bisect_left(matrix[r], target)
-        if(ind<len(matrix[0]) and matrix[r][ind]==target):
-            return True
+                s = mid
         return False
+
+            
