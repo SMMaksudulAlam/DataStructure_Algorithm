@@ -3,7 +3,7 @@ class Solution:
         if(len(t)>len(s)):
             return ""
         
-        ans = s+'x'
+        ans = ""
         dic = {}
         for e in t:
             dic[e] = dic.get(e, 0)+1
@@ -16,14 +16,12 @@ class Solution:
             
             while(max(dic.values())==0):
                 sub = s[l:r+1]
-                if(len(sub)<len(ans)):
+                if(not ans or len(sub)<len(ans)):
                     ans = sub
                 
                 c = s[l]
                 if(c in dic):
                     dic[c]+=1
                 l+=1
-        
-        if(len(ans)>len(s)):
-            return ""
+                
         return ans
