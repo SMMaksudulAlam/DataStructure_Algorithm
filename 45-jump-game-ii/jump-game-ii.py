@@ -1,12 +1,21 @@
 class Solution:
     def jump(self, nums: List[int]) -> int:
-        ans = [-1]*len(nums)
-        ans[0] = 0
-        for i in range(len(nums)):
-            if(nums[i]!=-1):
-                for nxt in range(i+1, min(len(nums), i+nums[i]+1)):
-                    if(ans[nxt]==-1):
-                        ans[nxt] = ans[i]+1
-                    else:
-                        ans[nxt] = min(ans[i]+1, ans[nxt])
-        return ans[-1]
+
+        count = 0
+        limit = 0
+
+        i=0
+        while(True):
+            j = i
+            if(limit>=len(nums)-1):
+                return count
+            next_limit = limit
+            while(j<=limit):
+                next_limit = max(next_limit, j+nums[j])
+                j+=1
+            if(limit == next_limit):
+                return -1
+            limit = next_limit
+            count+=1
+        return -1
+            
