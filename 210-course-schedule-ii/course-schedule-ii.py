@@ -1,32 +1,35 @@
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        dic = {}
+        graph = {}
         for c, p in prerequisites:
-            if(c not in dic):
-                dic[c] = []
-            dic[c].append(p)
+            if(c not in graph):
+                graph[c] = []
+            graph[c].append(p)
         
-        ans = []
+        dic = {}
         completed = set()
-        track = {}
-        def dfs(c):
-            if(c in track):
-                return False
-            if(c not in dic):
-                if(c not in completed):
-                    ans.append(c)
-                    completed.add(c)
-                return True
-            track[c] = 1
+        ans = []
 
-            for p in dic[c]:
+        def dfs(c):
+            if(c in completed):
+                return True
+            
+            if(c not in graph):
+                completed.add(c)
+                ans.append(c)
+                return True
+
+            if(c in dic):
+                return False
+
+            dic[c] = 1
+            for p in graph[c]:
                 comp = dfs(p)
                 if(not comp):
                     return False
-            ans.append(c)
+                    
             completed.add(c)
-            del track[c]
-            del dic[c]
+            ans.append(c)
             return True
         
         for i in range(numCourses):
@@ -34,4 +37,3 @@ class Solution:
             if(not comp):
                 return []
         return ans
-            
