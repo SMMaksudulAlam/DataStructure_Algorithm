@@ -21,25 +21,19 @@ class Solution:
         ordered = set()
         ans = []
 
-        def dfs(ch):
-            if(not dic[ch]):
-                if(ch not in ordered):
-                    ordered.add(ch)
-                    ans.append(ch)
+        def dfs(ch):                      
+            if(ch in ordered):
                 return True
-
             if(ch in track):
                 return False
-            
-            track.add(ch)
 
+            track.add(ch)
             for ch_ in dic[ch]:
                 if(not dfs(ch_)):
                     return False
-
-            if(ch not in ordered):
-                ordered.add(ch)
-                ans.append(ch)
+                    
+            ordered.add(ch)
+            ans.append(ch)
             track.remove(ch)
             return True
         
