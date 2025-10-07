@@ -11,41 +11,32 @@ class Solution:
             graph[u].append((v, t))
             graph[v].append((u, t))
         
-        count = 0
-        dic = {0:(0, 1)}
-        local = []
-        hq.heappush(local, (0, 0))
-        mod = 10**9 + 7
-        #print(graph)
-        while(local):
-            #print(local)
-            t, u = hq.heappop(local)
-            lst = graph.get(u, [])
-            time, path_count = dic[u]
-            #print("~~~~~~~", t, u, time, path_count, lst)
-            if(time != t):
-                continue
-            for v, t_dist in lst:
-                t_ = time + t_dist
-                if(v not in dic):
-                    #print(">>>>", v, t_, path_count, u, dic)
-                    dic[v] = (t_, path_count)
-                    hq.heappush(local, (t_, v))
-                    #print("after:", v, t_, path_count, u, dic)
-                else:
-                    if(t_>dic[v][0]):
-                        pass
-                    elif(t_==dic[v][0]):
-                        dic[v] = (t_, (dic[v][1]+path_count) % mod)
-                    else:
-                        #print(v, t_, path_count, u, dic)
-                        dic[v] = (t_, path_count)
-                        hq.heappush(local, (t_, v))
+        dic = {0: (0, 1)}
+        h = []
+        hq.heappush(h, (0, 0))
+        mod = 10**9+7
 
-        #print(dic)
+        while(h):
+            time, u = hq.heappop(h)
+            if(time != dic[u][0]):
+                continue
+            path_count = dic[u][1]
+
+            lst = graph.get(u, [])
+            for v, t in lst:
+                tme = t+time
+                if(v not in dic):
+                    dic[v] = (tme, path_count)
+                    hq.heappush(h, (tme, v))
+                else:
+                    if(dic[v][0]<tme):
+                        pass
+                    elif(dic[v][0]==tme):
+                       dic[v] = (tme, (path_count+dic[v][1])%mod)
+                    else:
+                        dic[v] = (tme, path_count)
+                        hq.heappush(h, (tme, v))
+            
         ans = dic.get(n-1, [])
         return ans[-1] if ans else -1
-
-
-
         
