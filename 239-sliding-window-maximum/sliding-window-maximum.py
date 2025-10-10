@@ -1,23 +1,29 @@
 import heapq as hq
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
-        h = []
-        ans = []
+        stack = deque([])
         for i in range(k):
-            hq.heappush(h, (-nums[i], i))
+            e = nums[i]
+            if(not stack):
+                stack.append((e, i))
+                continue
+            
+            while(stack and stack[-1][0]<=e):
+                stack.pop()
+            
+            stack.append((e, i))
         
-        v, ind = h[0]
-        ans.append(-v)
-
-        l = 0
+        ans = []
+        ans.append(stack[0][0])
+    
         for i in range(k, len(nums)):
-            v = nums[i]
-            hq.heappush(h, (-v, i))
-            l+=1
-            while(h and h[0][1]<l):
-                hq.heappop(h)
-
-            v, ind = h[0]
-            ans.append(-v)
+            if(stack[0][1]<=(i-k)):
+                stack.popleft()
+            e = nums[i]
+            while(stack and stack[-1][0]<=e):
+                stack.pop()
+            stack.append((e, i))
+            ans.append(stack[0][0])
         return ans
+
 
