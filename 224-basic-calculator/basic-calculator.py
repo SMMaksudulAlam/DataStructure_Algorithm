@@ -1,18 +1,14 @@
 class Solution:
     def calculate(self, s: str) -> int:
+        s = ''.join(s.split(' '))
         s = '0+'+s
 
         stack = []
         st = ''
         local_s = []
         for e in s:
-            if(e == ' ' and st):
-                if(st and st != ' '):
-                    st = int(st)
-                    local_s.append(st)
-                st = ''
-            elif(e == '+' or e == '-'):
-                if(st and st != ' '):
+            if(e == '+' or e == '-'):
+                if(st):
                     st = int(st)
                     local_s.append(st)
                     st = ''
@@ -22,7 +18,7 @@ class Solution:
                 local_s = []
                 st = ''
             elif(e == ')'):
-                if(st and st!=' '):
+                if(st):
                     local_s.append(int(st))
                 ans = 0
                 while(local_s):
@@ -42,7 +38,7 @@ class Solution:
             #print(stack, local_s, st)
 
 
-        if(st and st!=' '):
+        if(st):
             local_s.append(int(st))
         
         if(local_s):
