@@ -5,7 +5,7 @@ class Solution:
         s = 0
         rows = len(matrix)
         cols = len(matrix[0])
-        e = rows*cols
+        e = rows*cols-1
 
         while(s<=e):
             if(s==e):
