@@ -12,15 +12,10 @@ class Solution:
             return k
         
         while(left<=right):
-            #print(left, right)
             if(left==right):
-                if(arr[left]-left-1 == k):
-                    return left+k
                 return k+left+1
             if(left+1==right):
-                if(arr[left]-left-1 == k):
-                    return left+k
-                elif(arr[left]-left-1 < k):
+                if(arr[left]-left-1 < k):
                     return k+left+1
                 else:
                     return k+right+1
