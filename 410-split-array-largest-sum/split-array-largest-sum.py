@@ -1,39 +1,32 @@
 class Solution:
     def splitArray(self, nums: List[int], k: int) -> int:
-        mn = 0
-        mx = sum(nums)
-
-        if(k==1):
-            return mx
-        
-        def splitCount(cap):
-            count = 1
-            stotal = 0
-
-            for e in nums:
-                if(e>cap):
+        def split_count(largest_sum):
+            count = 0
+            sm = 0
+            for n in nums:
+                if(n>largest_sum):
                     return inf
-                
-                if(stotal+e>cap):
-                    stotal = 0
+                if(sm+n<=largest_sum):
+                    sm += n
+                else:
                     count+=1
-                stotal += e
-
-            return count
+                    sm = n
+            return count+1
         
-        while(mn<=mx):
-            if(mn==mx):
-                return mn
-            if(mn+1==mx):
-                if(splitCount(mn)<=k):
-                    return mn
-                return mx
-            
-            mid = (mn+mx)//2
-            #print(mn, mx, mid, splitCount(mid))
-            if(splitCount(mid)<=k):
-                mx = mid
+        left = min(nums)
+        right = sum(nums)
+
+        while(left <= right):
+            if(left == right):
+                return left
+            if(left+1==right):
+                if(split_count(left)<=k):
+                    return left
+                return right
+
+            mid = (left+right)//2
+            if(split_count(mid)>k):
+                left = mid
             else:
-                mn = mid
-            
+                right = mid
         return -1
