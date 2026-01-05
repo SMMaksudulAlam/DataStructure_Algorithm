@@ -1,44 +1,37 @@
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
-        if(len(nums1)>len(nums2)):
+        len1 = len(nums1)
+        len2 = len(nums2)
+
+        if(len1>len2):
             nums1, nums2 = nums2, nums1
+            len1, len2 = len2, len1
+        
+        left1, right1 = 0, len1-1
 
-        total_len = len(nums1)+len(nums2)
-        half_len = total_len // 2
+        half = (len1+len2)//2
 
-        lInd = 0
-        rInd = len(nums1)-1
-        #print(total_len)
-
+        #print(nums1, nums2, len1, len2)
         while(True):
-            
-            mid = (lInd+rInd)//2
+                ind1 = (left1+right1)//2
 
-            left1 = nums1[mid] if mid>=0 else -inf
-            right1 = nums1[mid+1] if mid+1<len(nums1) else inf
+                num1 = nums1[ind1] if ind1>=0 else -inf
+                num_r1 = nums1[ind1+1] if ind1+1<len1 else inf
 
-            remaining_count = half_len - (mid+1)
+                ind2 =  half - (ind1+1) - 1   
+                #print(ind1, ind2)
+                num2 = nums2[ind2] if ind2>=0 else -inf
+                num_r2 = nums2[ind2+1] if ind2+1<len2 else inf
 
-            ind = remaining_count-1
-
-            left2 = nums2[ind] if ind>=0 else -inf
-            right2 = nums2[ind+1] if ind+1<len(nums2) else inf
-
-            #print(lInd, rInd, "      ", ind, ind+1)
-
-            if(left1<=right2 and left2<=right1):
-                if(total_len%2!=0):
-                    return min(right1, right2)
+                if(num1<=num_r2 and num2<=num_r1):
+                    #print(len1, len2, num1, num2, num_r1, num_r2)
+                    if((len1+len2)%2==0):
+                        return (max(num1, num2) + min(num_r1, num_r2))/2.0
+                    else:
+                        return min(num_r1, num_r2)
+                elif(num1>num_r2):
+                    right1 = ind1-1
                 else:
-                    return (max(left1, left2) + min(right1, right2))/2
-
-            else:
-                if(left1>right2):
-                    rInd = mid-1
-
-                else:
-                    lInd = mid+1
-
+                    left1 = ind1+1
         return -1
-
 
