@@ -25,8 +25,8 @@ class Solution:
                 return right
 
             mid = (left+right)//2
-            if(split_count(mid)>k):
-                left = mid
-            else:
+            if(split_count(mid)<=k):
                 right = mid
+            else:
+                left = mid
         return -1
