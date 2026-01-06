@@ -1,38 +1,37 @@
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
-        if(matrix[0][0]>target or matrix[-1][-1]<target):
-            return False
-        s = 0
-        rows = len(matrix)
-        cols = len(matrix[0])
-        e = rows*cols-1
+        def resolve_ind(n):
+            ln = len(matrix[0])
+            row = n//ln
+            col = n%ln
+            return row, col
+        
+        left = 0
+        right = len(matrix)*len(matrix[0]) - 1
 
-        while(s<=e):
-            if(s==e):
-                row = s//cols
-                col = s%cols
-                if(matrix[row][col]==target):
+        while(left<=right):
+            if(left == right):
+                r, c = resolve_ind(left)
+                if(matrix[r][c] == target):
                     return True
                 return False
-            
-            if(s+1==e):
-                row = s//cols
-                col = s%cols
-                if(matrix[row][col]==target):
+
+            if(left+1 == right):
+                r, c = resolve_ind(left)
+                if(matrix[r][c] == target):
                     return True
-                row = e//cols
-                col = e%cols
-                if(matrix[row][col]==target):
+                
+                r, c = resolve_ind(right)
+                if(matrix[r][c] == target):
                     return True
+
                 return False
             
-            mid = (s+e)//2
-            row = mid//cols
-            col = mid%cols
-            if(matrix[row][col]>=target):
-                e = mid
+            mid = (left+right)//2
+            r, c = resolve_ind(mid)
+
+            if(matrix[r][c] <= target):
+                left = mid
             else:
-                s = mid
+                right = mid
         return False
-
-            
