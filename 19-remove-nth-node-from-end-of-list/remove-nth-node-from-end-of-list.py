@@ -10,18 +10,21 @@ class Solution:
         while(cur):
             count+=1
             cur = cur.next
+        
+        gotill = count-n
+        if(gotill == 0):
+            return head.next
 
-        goTill = count-n
+        dummy = ListNode()
+        dummy.next = head
 
-        dummy_head = ListNode()
-        dummy_head.next = head
+        cur = dummy
         count = 0
-        cur = dummy_head
 
-        while(count<goTill):
+        while(count<gotill):
             cur = cur.next
             count+=1
         
         cur.next = cur.next.next
 
-        return dummy_head.next
+        return head
