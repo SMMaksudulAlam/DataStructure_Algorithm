@@ -1,20 +1,23 @@
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates.sort()
         ans = []
 
-        def build(temp, sum, ind):
+        def comb(ar, sm, ind):
             nonlocal target
-            if(sum==target):
-                ans.append(temp)
+            if(sm == target):
+                ans.append(ar)
                 return
-            if(sum>target):
-                return
-            
+
             for i in range(ind, len(candidates)):
                 e = candidates[i]
-                build(temp+[e], sum+e, i)
-            
-            return
+                if(sm+e<=target):
+                    comb(ar+[e], sm+e, i)
+                else:
+                    break
+            return 
         
-        build([], 0, 0)
+        comb([], 0, 0)
         return ans
+
+        
