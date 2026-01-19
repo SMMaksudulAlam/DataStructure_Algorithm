@@ -1,19 +1,19 @@
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
         nums.sort()
-
+        ans = [[]]
         dic = {}
-        lst = [[]]
-        
-        for n in nums:
-            lst_ = []
-            for ls in lst:
-                lst_.append(ls)
-                ls_ = ls+[n]
-                s = "".join([str(i) for i in ls_])
-                if(s not in dic):
-                    lst_.append(ls_)
-                    dic[s]=1
-            lst = lst_
 
-        return lst
+        for n in nums:
+            ans_ = []
+            for ar in ans:
+                ans_.append(ar)
+                ar_ = ar+[n]
+                s = ""
+                for e in ar_:
+                    s+=str(e)
+                if(s not in dic):
+                    dic[s] = 1
+                    ans_.append(ar_)
+            ans = ans_
+        return ans
