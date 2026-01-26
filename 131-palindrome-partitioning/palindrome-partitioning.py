@@ -5,8 +5,11 @@ class Solution:
                 return True
             return False
 
+        dic = {}
         def build_ans(s):
             ans = []
+            if(s in dic):
+                return dic[s]
             if(not s):
                 return [[]]
             for i in range(1, len(s)+1):
@@ -16,6 +19,7 @@ class Solution:
                     
                     for ans_ in temp_ans:
                         ans.append([part]+ans_)
+            dic[s] = ans
             return ans
         
         ans = build_ans(s)
