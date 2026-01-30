@@ -3,49 +3,46 @@ class Solution:
         """
         Do not return anything, modify board in-place instead.
         """
-        rows = {}
-        cols = {}
-        grids = {}
-        dots = deque()
+        ln = len(board)
+        rows = {i:set() for i in range(ln)}
+        cols = {i:set() for i in range(ln)}
+        blocks = {i:set() for i in range(ln)}
 
-        for r in range(len(board)):
-            for c in range(len(board[0])):
-                if(r not in rows):
-                    rows[r] = set()
-                if(c not in cols):
-                    cols[c] = set()
-                g = (r//3)*3 + (c//3)
-                if(g not in grids):
-                    grids[g] = set()
-                if(board[r][c]!='.'):
-                    e = board[r][c]
-                    rows[r].add(e)
-                    cols[c].add(e)
-                    grids[g].add(e)
+        cells = deque()
+
+        for i in range(ln):
+            for j in range(ln):
+                if(board[i][j]!='.'):
+                    ch = int(board[i][j])
+                    blk = (i//3)*3 + (j//3)
+                    rows[i].add(ch)
+                    cols[j].add(ch)
+                    blocks[blk].add(ch)
                 else:
-                    dots.append((r, c))
-        #print(rows, cols, grids)
+                    cells.append((i, j))
+        
 
         def solve():
-            if(not dots):
-                return True       
-            r, c = dots.popleft()
-            g = (r//3)*3 + (c//3)
-            for ind in range(1, 10):
-                i = str(ind)
-                if(i not in rows[r] and i not in cols[c] and i not in grids[g]):
-                    rows[r].add(i)
-                    cols[c].add(i)
-                    grids[g].add(i)
-                    board[r][c] = i
-                    ans = solve()
-                    if(ans):
+            i, j = cells.popleft()
+            blk = (i//3)*3 + (j//3)
+            for x in range(1, 10):
+                if(x not in rows[i] and x not in cols[j] and x not in blocks[blk]):
+                    rows[i].add(x)
+                    cols[j].add(x)
+                    blocks[blk].add(x)
+                    board[i][j] = str(x)
+                    if(not cells):
                         return True
-                    rows[r].remove(i)
-                    cols[c].remove(i)
-                    grids[g].remove(i)
-                    board[r][c] = '.'  
-            dots.appendleft((r, c))
+                    solved = solve()
+                    if(solved):
+                        return True
+                    
+                    rows[i].remove(x)
+                    cols[j].remove(x)
+                    blocks[blk].remove(x)
+                    board[i][j] = '.'
+
+            cells.appendleft((i, j))
             return False
+
         solve()
-                                
