@@ -4,26 +4,33 @@ class Solution:
         right = len(nums)-1
 
         while(left<=right):
-            if(left == right):
-                return left if nums[left]==target else -1
-            if(left+1==right):
-                if(nums[left]==target):
+            left_e = nums[left]
+            right_e = nums[right]
+
+            if(left==right):
+                if(left_e == target):
                     return left
-                elif(nums[right]==target):
-                    return right
                 else:
                     return -1
-            
-            mid = (left+right)//2
-            mid_val = nums[mid]
 
-            if(nums[left]<=mid_val):
-                if(nums[left]<=target<=mid_val):
+            if(left+1 == right):
+                if(left_e == target):
+                    return left
+                elif(right_e == target):
+                    return right
+                else:
+                    return -1 
+
+            mid = (left+right)//2
+            mid_e = nums[mid]
+
+            if(left_e<mid_e):
+                if(left_e<=target<=mid_e):
                     right = mid
                 else:
                     left = mid
             else:
-                if(mid_val<=target<=nums[right]):
+                if(mid_e<=target<=right_e):
                     left = mid
                 else:
                     right = mid
