@@ -4,34 +4,35 @@ class Solution:
         len2 = len(nums2)
 
         if(len1>len2):
-            nums1, nums2 = nums2, nums1
             len1, len2 = len2, len1
+            nums1, nums2 = nums2, nums1
         
-        left1, right1 = 0, len1-1
+        total_count = len1+len2
+        left_part_count = (total_count // 2)
 
-        half = (len1+len2)//2
+        left1 = 0
+        right1 = len1 - 1
 
-        #print(nums1, nums2, len1, len2)
         while(True):
-                ind1 = (left1+right1)//2
+            mid1 = (left1 + right1) // 2
+            mid_e11 = nums1[mid1] if(nums1 and mid1>=0) else -inf
+            mid_e12 = nums1[mid1+1] if(nums1 and mid1+1<len1) else inf
 
-                num1 = nums1[ind1] if ind1>=0 else -inf
-                num_r1 = nums1[ind1+1] if ind1+1<len1 else inf
+            rest = left_part_count - (mid1 + 1)
+            mid2 = rest - 1
+            mid_e21 = nums2[mid2] if(nums2 and mid2>=0) else -inf
+            mid_e22 = nums2[mid2+1] if(nums2 and mid2+1<len2) else inf
 
-                ind2 =  half - (ind1+1) - 1   
-                #print(ind1, ind2)
-                num2 = nums2[ind2] if ind2>=0 else -inf
-                num_r2 = nums2[ind2+1] if ind2+1<len2 else inf
-
-                if(num1<=num_r2 and num2<=num_r1):
-                    #print(len1, len2, num1, num2, num_r1, num_r2)
-                    if((len1+len2)%2==0):
-                        return (max(num1, num2) + min(num_r1, num_r2))/2.0
-                    else:
-                        return min(num_r1, num_r2)
-                elif(num1>num_r2):
-                    right1 = ind1-1
+            if(mid_e11 <= mid_e22 and mid_e21 <= mid_e12):
+                #print(mid_e11, mid_e12, ">>>", mid_e21, mid_e22)
+                if(total_count%2==1):
+                    return min(mid_e12, mid_e22)
                 else:
-                    left1 = ind1+1
-        return -1
+                    return (min(mid_e12, mid_e22) + max(mid_e11, mid_e21))/2
+            
+            if(mid_e11 > mid_e22):
+                right1 = mid1-1
+            else:
+                left1 = mid1+1
 
+        return -1
