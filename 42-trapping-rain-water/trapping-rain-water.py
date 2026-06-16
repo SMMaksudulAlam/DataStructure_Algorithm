@@ -1,32 +1,33 @@
 class Solution:
     def trap(self, height: List[int]) -> int:
-        n = len(height)
-        ans = [0]*n
+        ln = len(height)
+        ans = [0]*ln
+
         l = 0
-        lh = height[0]
-        for r in range(1, n):
-            if(height[r]<lh):
+        for r in range(1, ln):
+            left_h = height[l]
+            right_h = height[r]
+
+            if(left_h > right_h):
                 continue
-            rh = height[r]
-            bound = min(lh, rh)
+            
+            h = min(left_h, right_h)
             while(l<r):
-                space = bound - height[l]
-                ans[l] = max(ans[l], space)
+                ans[l] = max(ans[l], h-height[l])
                 l+=1
-            lh = height[l]
+            
+        r = ln-1
+        for l in range(ln-2, -1, -1):
+            left_h = height[l]
+            right_h = height[r]
 
-        r = n-1
-        rh = height[r]
-        for l in range(n-1, -1, -1):
-            if(height[l]<rh):
+            if(right_h > left_h):
                 continue
-            lh = height[l]
-            bound = min(lh, rh)
+            
+            h = min(left_h, right_h)
             while(l<r):
-                space = bound - height[r]
-                ans[r] = max(ans[r], space)
+                ans[r] = max(ans[r], h-height[r])
                 r-=1
-            rh = height[r]
 
-
+        #print(ans)
         return sum(ans)
