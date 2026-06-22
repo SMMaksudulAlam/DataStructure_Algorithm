@@ -1,27 +1,20 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        if(len(t)>len(s)):
-            return ""
-        
         ans = ""
         dic = {}
-        for e in t:
-            dic[e] = dic.get(e, 0)+1
+        for ch in t:
+            dic[ch] = dic.get(ch, 0) + 1
         
-        l = 0
-        for r in range(len(s)):
-            ch = s[r]
-            if(ch in dic):
-                dic[ch]-=1
-            
+        left = 0
+        for right in range(len(s)):
+            if(s[right] in dic):
+                dic[s[right]] -= 1
+                
             while(max(dic.values())==0):
-                sub = s[l:r+1]
-                if(not ans or len(sub)<len(ans)):
-                    ans = sub
-                
-                c = s[l]
-                if(c in dic):
-                    dic[c]+=1
-                l+=1
-                
+                if(not ans or right-left+1 < len(ans)):
+                    ans = s[left:right+1]
+                if(s[left] in dic):
+                    dic[s[left]] += 1
+                left+=1  
+
         return ans
