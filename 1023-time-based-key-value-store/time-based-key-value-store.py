@@ -1,41 +1,44 @@
 class TimeMap:
-
     def __init__(self):
         self.dic = {}
-
     def set(self, key: str, value: str, timestamp: int) -> None:
         if(key not in self.dic):
             self.dic[key] = []
-        
         self.dic[key].append((timestamp, value))
-    
+
     def get(self, key: str, timestamp: int) -> str:
-        if(key not in self.dic):
+        lst = self.dic.get(key, [])
+
+        if(not lst or lst[0][0]>timestamp):
             return ""
         
-        lst = self.dic[key]
-        l = 0
-        r = len(lst)-1
+        if(lst[-1][0]<=timestamp):
+            return lst[-1][1]
 
-        while(l<=r):
-            if(l==r):
-                if(lst[l][0]<=timestamp):
-                    return lst[l][1]
-                return ""
-            if(l+1==r):
-                if(lst[r][0]<=timestamp):
-                    return lst[r][1]
-                if(lst[l][0]<=timestamp):
-                    return lst[l][1]
-                return ""
+        left = 0
+        right = len(lst)-1
+
+        while(left<=right):
+            if(left == right):
+                if(lst[right][0]<=timestamp):
+                    return lst[right][1]
+                else:
+                    return ""
+            if(left+1 == right):
+                if(lst[right][0]<=timestamp):
+                    return lst[right][1]
+                elif(lst[left][0]<=timestamp):
+                    return lst[left][1]
+                else:
+                    return ""
             
-            m = (l+r)//2
-            if(lst[m][0]<=timestamp):
-                l = m
+            mid = (left+right)//2
+            if(lst[mid][0]>=timestamp):
+                right = mid
             else:
-                r = m
-        return ""
+                left = mid
 
+        return ""
 
 
 # Your TimeMap object will be instantiated and called as such:
