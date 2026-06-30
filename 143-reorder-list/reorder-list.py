@@ -9,50 +9,51 @@ class Solution:
         Do not return anything, modify head in-place instead.
         """
 
+        dummyNode = ListNode()
+        dummyNode.next = head
+
+        length = 0
+        current = dummyNode
+        while(current != None):
+            length += 1
+            current = current.next
+
+        #print(length)
+
+        half = length//2
+
+        firstHalf = head
+        secondHalf = None
+
         count = 0
-        cur = head
-
-        while(cur):
+        current = dummyNode
+        while(count < half):
+            current = current.next
             count+=1
-            cur = cur.next
         
-        half_count = count//2
+        secondHalf = current.next
+        current.next = None
 
-        counter = 1
-        cur = head
-        while(counter<half_count):
-            cur = cur.next
-            counter+=1
-        
-        #print(cur)
-
-        rest = cur.next
-        cur.next = None
+        #print(firstHalf, secondHalf)
 
         prev = None
-        cur = rest
+        while(secondHalf):
+            next = secondHalf.next
+            secondHalf.next = prev
+            prev = secondHalf
+            secondHalf = next
 
-        while(cur):
-            next = cur.next
-            cur.next = prev
-            prev = cur
-            cur = next
+        secondHalf = prev
+        #print(firstHalf, secondHalf)
         
-        post = prev
-        cur = head
-        pre = head.next
-        while(pre and post):
-            cur.next = post
-            post = post.next
-            cur = cur.next
-
-            cur.next = pre
-            pre = pre.next
-            cur = cur.next
-
-        if(post):
-            cur.next = post
-
-        return head
+        current = head
+        while(secondHalf):
+            next = current.next
+            current.next = secondHalf
+            #print(secondHalf)
+            secondHalf = secondHalf.next
+            current = current.next
+            current.next = next
+            current = current.next
         
-
+        
