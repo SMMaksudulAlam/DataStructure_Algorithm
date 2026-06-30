@@ -13,6 +13,8 @@ class Solution:
         fast = head.next
         if(not fast):
             return False
+        else:
+            fast = head.next
 
         while(fast!=slow):
             if(not fast):
