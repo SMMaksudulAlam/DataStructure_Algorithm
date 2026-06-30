@@ -10,18 +10,15 @@ class Solution:
             return False
 
         slow = head
-        fast = head.next
-        if(not fast):
-            return False
-        else:
-            fast = head.next
+        fast = head
 
-        while(fast!=slow):
+        while(True):
             if(not fast):
                 return False
             slow = slow.next
             fast = fast.next
             if(fast):
                 fast = fast.next
-        
-        return True
+            if(fast and slow == fast):
+                return True
+        return False
