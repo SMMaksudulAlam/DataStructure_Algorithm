@@ -1,13 +1,20 @@
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
-        ans = [0]*(amount+1)
-        ans[0] = 1
+        dp = {}
+        def min_coin(rem, ind):
+            if((rem, ind) in dp):
+                return dp[(rem, ind)]
+            if(rem < 0 or ind < 0):
+                return inf
 
-        for i in range(amount+1):
-            for c in coins:
-                if(i-c>=0 and ans[i-c]!=0):
-                    if(ans[i]==0):
-                        ans[i] = ans[i-c]+1
-                    else:
-                        ans[i] = min(ans[i], ans[i-c]+1)
-        return ans[amount]-1
+            if(rem == 0):
+                return 0
+            
+            take = 1 + min_coin(rem - coins[ind], ind)
+            not_take = min_coin(rem, ind-1)
+
+            dp[(rem, ind)] =  min(take, not_take)
+            return dp[(rem, ind)]
+    
+        ans = min_coin(amount, len(coins)-1)
+        return -1 if ans == inf else ans
