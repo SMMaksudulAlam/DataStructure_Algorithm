@@ -1,15 +1,20 @@
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
-        dp = [[0]*(amount+1) for _ in range(len(coins)+1)]
-        dp[0][0] = 1
+        dp = {}
+        def min_coin(rem, ind):
+            if((rem, ind) in dp):
+                return dp[(rem, ind)]
+            if(rem < 0 or ind < 0):
+                return 0
 
-        for i in range(1, len(coins)+1):
-            for j in range(amount+1):
-                dp[i][j] = dp[i-1][j]
-                c = coins[i-1]
-                if(j-c>=0):
-                    dp[i][j]+=dp[i][j-c]
+            if(rem == 0):
+                return 1
+            
+            take = min_coin(rem - coins[ind], ind)
+            not_take = min_coin(rem, ind-1)
 
-        return dp[-1][-1]
-
-        
+            dp[(rem, ind)] =  take + not_take
+            return dp[(rem, ind)]
+    
+        ans = min_coin(amount, len(coins)-1)
+        return ans
