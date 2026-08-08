@@ -1,18 +1,19 @@
 class Solution:
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
-        dic = {0:1}
+        dp = {}
+        def count_ways(rem, ind):
+            if((rem, ind) in dp):
+                return dp[(rem, ind)]
+            if(ind < 0):
+                if(rem == 0):
+                    return 1
+                return 0
+            
+            num = nums[ind]
+            pos = count_ways(rem - num, ind-1)
+            neg = count_ways(rem + num, ind-1)
 
-        for i in range(len(nums)):
-            e = nums[i]
-            dic_ = {}
-            for k in dic.keys():
-                k_ = k+e
-                dic_[k_] = dic_.get(k_, 0) + dic[k]
-                k_ = k-e
-                dic_[k_] = dic_.get(k_, 0)  + dic[k]
-            dic = dic_
+            dp[(rem, ind)] = pos + neg
+            return dp[(rem, ind)]
 
-        ans = 0
-        if(target in dic):
-            ans = dic[target]
-        return ans
+        return count_ways(target, len(nums)-1)
