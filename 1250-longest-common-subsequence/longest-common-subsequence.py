@@ -1,17 +1,19 @@
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
-        if(len(text1)>len(text2)):
-            text1, text2 = text2, text1
-        
-        text1 = 'X'+text1
-        text2 = 'X'+text2
+        dp = {}
+        def LCS(ind1, ind2):
+            if((ind1, ind2) in dp):
+                return dp[(ind1, ind2)]
+            if(ind1<0 or ind2<0):
+                return 0
+            ans = 0
+            if(text1[ind1] == text2[ind2]):
+                ans = 1 + LCS(ind1-1, ind2-1)
+            else:
+                ans = max(LCS(ind1-1, ind2-1), LCS(ind1, ind2-1), LCS(ind1-1, ind2))
+            
+            dp[(ind1, ind2)] = ans
+            return ans
 
-        ans = [[1]*len(text2) for _ in range(len(text1))]
-
-        for i in range(1, len(text1)):
-            for j in range(1, len(text2)):
-                if(text1[i]==text2[j]):
-                    ans[i][j] = ans[i-1][j-1]+1
-                else:
-                    ans[i][j] = max(ans[i-1][j-1], ans[i-1][j], ans[i][j-1])
-        return ans[-1][-1]-1
+        ans = LCS(len(text1)-1, len(text2)-1)
+        return ans
