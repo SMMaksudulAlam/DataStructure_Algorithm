@@ -1,5 +1,6 @@
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
+        """
         dp = {}
         def min_coin(rem, ind):
             if((rem, ind) in dp):
@@ -18,3 +19,20 @@ class Solution:
     
         ans = min_coin(amount, len(coins)-1)
         return ans
+        """
+
+        prev = [0]*(amount+1)
+        prev[0] = 1
+
+        for c in coins:
+            cur = [0]*(amount+1)
+            cur[0] = 1
+            for ind in range(1, amount+1):
+                not_take = prev[ind]
+                take = 0
+                if(ind-c>=0):
+                    take += cur[ind-c] #repetation
+                cur[ind] = take + not_take
+            prev = cur
+        print(prev)
+        return prev[-1]
