@@ -24,13 +24,12 @@ class Solution:
         if(amount == 0):
             return 0
         dp = [inf]*(amount+1)
+        dp[0] = 0
 
         for ind in range(amount + 1):
             for c in coins:
                 _ind = ind-c 
                 if(_ind >= 0):
-                    if(_ind == 0):
-                        dp[ind] = 1
-                    elif(dp[_ind] != inf):
+                    if(dp[_ind] != inf):
                         dp[ind] = min(dp[ind], 1+dp[_ind])
         return dp[amount] if dp[amount] != inf else -1
