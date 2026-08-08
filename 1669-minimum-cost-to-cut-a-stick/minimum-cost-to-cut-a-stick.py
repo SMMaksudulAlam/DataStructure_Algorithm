@@ -2,6 +2,7 @@ class Solution:
     def minCost(self, n: int, cuts: List[int]) -> int:
         """  
         #The greedy solution on heuristic: cut at closest to mid point will give optimal cost
+        #But it does not solve the problem indeed
 
         cuts.sort()
         #print(cuts)
@@ -45,6 +46,9 @@ class Solution:
         ans = cut_stick(0, n)
         return ans
         """
+
+        """
+        #My DP solution and it works. :)
 
         cuts.sort()
         #print(cuts)
@@ -93,4 +97,25 @@ class Solution:
         
         ans = cut_stick(0, n)
         return ans
+        """
+        cuts.sort()
+        cuts = [0]+cuts+[n]
+
+        dp = {}
+
+        def cut_stick(left_ind, right_ind):
+            if((left_ind, right_ind) in dp):
+                return dp[(left_ind, right_ind)]
+
+            if(left_ind+1 == right_ind):
+                return 0
+            ans = inf
+            for ind in range(left_ind+1, right_ind):
+                temp_ans = (cuts[right_ind] - cuts[left_ind]) + cut_stick(left_ind, ind) + cut_stick(ind, right_ind)
+                ans = min(ans, temp_ans)
             
+            dp[(left_ind, right_ind)] = ans
+            return ans
+        
+        ans = cut_stick(0, len(cuts)-1)
+        return ans
