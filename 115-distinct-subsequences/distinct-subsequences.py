@@ -1,20 +1,20 @@
 class Solution:
     def numDistinct(self, s: str, t: str) -> int:
+        dp = {}
+        def count_DS(indS, indT):
+            if((indS, indT) in dp):
+                return dp[(indS, indT)]
+            if(indT<0):
+                return 1
+            if(indS<0):
+                return 0
+            ans = 0
+            if(s[indS] == t[indT]):
+                ans += count_DS(indS-1, indT-1)
+            ans += count_DS(indS-1, indT)
+            dp[(indS, indT)] = ans
+            return ans
 
-        text1, text2 = t, s
-        
-        text1 = 'X'+text1
-        text2 = 'X'+text2
-
-        ans = [[1]*len(text2)]
-        for _ in range(len(text1)-1):
-            row = [0]*len(text2)
-            ans.append(row)
-
-        for i in range(1, len(text1)):
-            for j in range(1, len(text2)):
-                if(text1[i]==text2[j]):
-                    ans[i][j] = ans[i-1][j-1]+ans[i][j-1]
-                else:
-                    ans[i][j] = ans[i][j-1]
-        return ans[-1][-1]
+        ans = count_DS(len(s)-1, len(t)-1)
+        return ans
+            
