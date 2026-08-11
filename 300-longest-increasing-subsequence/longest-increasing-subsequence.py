@@ -20,6 +20,17 @@ class Solution:
         ans = lis(0, -1)
         return ans
         """
+
+        dp = [1]*len(nums)
+        ans = 0
+        for ind in range(len(nums)):
+            for prev in range(ind):
+                if(nums[prev]<nums[ind]):
+                    dp[ind] = max(dp[ind], dp[prev]+1)
+            ans = max(ans, dp[ind])
+        return ans
+        
+        """
         ans = []
         for n in nums:
             ind = bisect.bisect_left(ans, n)
@@ -28,4 +39,4 @@ class Solution:
             else:
                 ans[ind] = n
             #print(n, ans)
-        return len(ans)
+        return len(ans)"""
