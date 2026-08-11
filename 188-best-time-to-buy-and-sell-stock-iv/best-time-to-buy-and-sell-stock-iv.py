@@ -1,10 +1,22 @@
 class Solution:
     def maxProfit(self, k: int, prices: List[int]) -> int:
-        buys = [inf]*(k+1)
-        profits = [0]*(k+1)
-
-        for p in prices:
-            for i in range(1, k+1):
-                buys[i] = min(buys[i], p-profits[i-1])
-                profits[i] = max(profits[i], p-buys[i])
-        return max(profits)
+        dp = {}
+        def make_profit(ind, couldBuy, tx):
+            if((ind, couldBuy, tx) in dp):
+                return dp[(ind, couldBuy, tx)]
+            if(ind == len(prices)):
+                return 0
+            profit = 0
+            if(couldBuy==1):
+                p1 = 0
+                if(tx<k):
+                    p1 = -prices[ind] + make_profit(ind+1, 0, tx+1)
+                    p2 = make_profit(ind+1, 1, tx)
+                    profit = max(p1, p2)
+            else:
+                profit = max(prices[ind] + make_profit(ind+1, 1, tx), make_profit(ind+1, 0, tx))
+            dp[(ind, couldBuy, tx)] = profit
+            return dp[(ind, couldBuy, tx)]
+        
+        profit = make_profit(0, 1, 0)
+        return profit
