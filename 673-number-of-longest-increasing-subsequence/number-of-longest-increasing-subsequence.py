@@ -8,9 +8,11 @@ class Solution:
                 if(nums[ind]>nums[prev]):
                     if(dp[prev]+1>dp[ind]):
                         dp[ind] = dp[prev]+1
-                        count[ind] = 0
-                    if(dp[prev]+1==dp[ind]):
+                        count[ind] = count[prev]
+                    elif(dp[prev]+1==dp[ind]):
                         count[ind]+=count[prev]
+                    else:
+                        pass
         max_len = max(dp)
         ans = 0
         for i in range(len(dp)):
