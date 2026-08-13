@@ -1,28 +1,36 @@
 class Solution:
     def orangesRotting(self, grid: List[List[int]]) -> int:
         dir = [(-1, 0), (1, 0), (0, -1,), (0, 1)]
+        rotten = []
+        row = len(grid)
+        col = len(grid[0])
+        visited = set()
 
-        s = set()
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if(grid[i][j]==2):
-                    s.add((i, j))
+        for r in range(row):
+            for c in range(col):
+                if(grid[r][c] == 2):
+                    rotten.append((r, c))
+                    visited.add((r, c))
+            
         time = 0
-        while(s):
-            s_ = set()
-            for i, j in s:
-                for dx, dy in dir:
-                    x = i+dx
-                    y = j+dy
-                    if(0<=x<len(grid) and 0<=y<len(grid[0]) and grid[x][y]==1):
-                        grid[x][y] = 2
-                        s_.add((x, y))
-            s = s_
-            if(s):
+        dir = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+        while(rotten):
+            rotten_ = []
+            while(rotten):
+                (r, c) = rotten.pop()
+                for (dr, dc) in dir:
+                    r_ = dr + r
+                    c_ = dc + c
+                    if(0<=r_<row and 0<=c_<col and ((r_, c_) not in visited) and grid[r_][c_]==1):
+                        rotten_.append((r_, c_))
+                        visited.add((r_, c_))
+                
+            rotten = rotten_
+            if(rotten_):
                 time+=1
         
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if(grid[i][j]==1):
+        for r in range(row):
+            for c in range(col):
+                if(grid[r][c] == 1 and ((r, c) not in visited)):
                     return -1
         return time
