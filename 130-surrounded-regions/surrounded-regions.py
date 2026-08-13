@@ -4,37 +4,55 @@ class Solution:
         Do not return anything, modify board in-place instead.
         """
 
-        dir = [(-1, 0), (1, 0), (0, -1,), (0, 1)]
-
-        def dfs(i, j, dic):
-            dic[(i, j)] = 1
-            ans = False
-            for dx, dy in dir:
-                x = i+dx
-                y = j+dy
-                if(0<=x<len(board) and 0<=y<len(board[0]) and (x, y) not in dic and board[x][y]=='O'):
-                    ans_ = dfs(x, y, dic)
-                    ans = ans or ans_
-            if(i==0 or i==len(board)-1 or j==0 or j==len(board[0])-1):
-                return True
-            return ans
+        visited = set()
+        edge_connected = []
         
-        for i in range(len(board)):
-            for j in range(len(board[0])):
-                if(board[i][j]=='O'):
-                    dic = {}
-                    res = dfs(i, j, dic)
-                    if(not res):
-                        for x, y in dic.keys():
-                            board[x][y] = 'X'
-                    else:
-                        for x, y in dic.keys():
-                            board[x][y] = 'P'
+        row = len(board)
+        col = len(board[0])
 
-        for i in range(len(board)):
-            for j in range(len(board[0])):
-                if(board[i][j]=='P'):
-                    board[i][j]='O'
+        for r in range(row):
+            if(r==0 or r==row-1):
+                for c in range(col):
+                    if(board[r][c]=="O"):
+                        edge_connected.append((r, c))
+            else:
+                if(board[r][0]=="O"):
+                    edge_connected.append((r, 0))
+                if(board[r][col-1]=="O"):
+                    edge_connected.append((r, col-1))
+        #print(edge_connected)
+
+        dir = [(-1, 0), (1, 0), (0, 1), (0, -1)]
+
+        def track_edge_connected(i, j):
+            visited.add((i, j))
+            for (di, dj) in dir:
+                i_ = i+di
+                j_ = j+dj
+
+                if((0<=i_<row and 0<=j_<col) and board[i_][j_] == "O" and ((i_, j_) not in visited)):
+                    track_edge_connected(i_, j_)
+            return
+
+        for (i, j) in edge_connected:
+            if((i, j) not in visited):
+                track_edge_connected(i, j)
+
+        #print(visited)
 
 
-        
+        def filler(i, j):
+            board[i][j] = "X"
+            for (di, dj) in dir:
+                i_ = i+di
+                j_ = j+dj
+
+                if((0<=i_<row and 0<=j_<col) and board[i_][j_] == "O"):
+                    filler(i_, j_)
+            return
+
+        for i in range(1, row-1):
+            for j in range(1, col-1):
+                if(board[i][j] == "O" and ((i, j) not in visited)):
+                    filler(i, j)
+        return
