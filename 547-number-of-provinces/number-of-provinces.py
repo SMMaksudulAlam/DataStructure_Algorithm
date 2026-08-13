@@ -1,5 +1,6 @@
 class Solution:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
+        """
         visited = set()
         graph = {}
         ln = len(isConnected)
@@ -26,6 +27,21 @@ class Solution:
                 ans+=1
                 traverse_province(k)
         return ans
+        """
 
-                
+        visited = set()
+        ans = 0
+        ln = len(isConnected)
+        def traverse_province(i):
+            visited.add(i)
+            for j in range(ln):
+                if(isConnected[i][j]==1 and j not in visited):
+                    traverse_province(j)
+            return
+
+        for k in range(ln):
+            if(k not in visited):
+                ans+=1
+                traverse_province(k)
+        return ans
                 
