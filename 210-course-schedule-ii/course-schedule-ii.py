@@ -5,35 +5,30 @@ class Solution:
             if(c not in graph):
                 graph[c] = []
             graph[c].append(p)
-        
-        dic = {}
-        completed = set()
-        ans = []
 
-        def dfs(c):
-            if(c in completed):
-                return True
-            
-            if(c not in graph):
-                completed.add(c)
-                ans.append(c)
-                return True
+        completed = []
+        has_loop = set()
 
-            if(c in dic):
+        in_path = set()
+
+        def traverse(nde):
+            if(nde in in_path):
                 return False
+            if(nde in completed):
+                return True
 
-            dic[c] = 1
-            for p in graph[c]:
-                comp = dfs(p)
-                if(not comp):
+            in_path.add(nde)
+            neigh = graph.get(nde, [])
+
+            for n in neigh:
+                if(not traverse(n)):
                     return False
-                    
-            completed.add(c)
-            ans.append(c)
+
+            completed.append(nde)
+            in_path.remove(nde)
             return True
-        
-        for i in range(numCourses):
-            comp = dfs(i)
-            if(not comp):
+
+        for nde in range(numCourses):
+            if(not traverse(nde)):
                 return []
-        return ans
+        return completed
