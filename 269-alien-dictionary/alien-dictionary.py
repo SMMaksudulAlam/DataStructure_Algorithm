@@ -1,21 +1,12 @@
 class Solution:
     def alienOrder(self, words: List[str]) -> str:
-        if(len(words)==1):
-            ans = list(set([ch for ch in words[0]]))
-            return "".join(ans)
-
-
         graph = {}
+        for w in words:
+            for ch in w:
+                graph[ch] = set()
         for i in range(len(words)-1):
             w1 = words[i]
             w2 = words[i+1]
-
-            for ch in w1:
-                if(ch not in graph):
-                    graph[ch] = set()
-            for ch in w2:
-                if(ch not in graph):
-                    graph[ch] = set()
 
             len1 = len(w1) 
             len2 = len(w2)
