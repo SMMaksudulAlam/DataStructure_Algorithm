@@ -6,9 +6,9 @@ class Solution:
                 graph[c] = []
             graph[c].append(p)
 
-        completed = []
+        completed = set()
         has_loop = set()
-
+        ans = []
         in_path = set()
 
         def traverse(nde):
@@ -24,11 +24,12 @@ class Solution:
                 if(not traverse(n)):
                     return False
 
-            completed.append(nde)
+            completed.add(nde)
+            ans.append(nde)
             in_path.remove(nde)
             return True
 
         for nde in range(numCourses):
             if(not traverse(nde)):
                 return []
-        return completed
+        return ans
