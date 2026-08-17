@@ -4,29 +4,25 @@ class Solution:
         count1, count2 = 0, 0
 
         for n in nums:
-            if(count1 == 0 and n!=num2):
-                count1 += 1
+            if(count1==0 and n!=num2):
                 num1 = n
-                continue
-            
-            if (count2 == 0 and n!=num1):
-                count2 += 1
-                num2 = n
-                continue
-            
-            if(n == num1):
                 count1+=1
-            elif(n == num2):
+            elif(count2==0 and n!=num1):
+                num2 = n
+                count2+=1
+            elif(n==num1):
+                count1+=1
+            elif(n==num2):
                 count2+=1
             else:
                 count1-=1
                 count2-=1
         
-        res = []
-        threshold = len(nums)//3
-
-        if(nums.count(num1)>threshold):
-            res.append(num1)
-        if(nums.count(num2)>threshold):
-            res.append(num2)
-        return res
+        ans = []
+        if(nums.count(num1)>len(nums)//3):
+            ans.append(num1)
+        if(nums.count(num2)>len(nums)//3):
+            ans.append(num2)
+        return ans
+        
+            
