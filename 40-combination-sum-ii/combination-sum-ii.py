@@ -30,12 +30,12 @@ class Solution:
 
         nums = candidates
         nums.sort()
-        
+
         def comb_sum(target, ind):
             if(target == 0):
-                return set()
+                return []
             if(ind<0):
-                return set()
+                return []
             
             ans = []
             if(target >= nums[ind]):
