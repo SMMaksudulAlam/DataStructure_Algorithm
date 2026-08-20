@@ -1,14 +1,22 @@
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        ans = []
-        def build(temp, rest):
-            if(not rest):
-                ans.append(temp) 
-            ln = len(rest)
-            for i in range(ln):
-                x = rest.pop(0)
-                build(temp+[x], rest[:])
-                rest.append(x)
-
-        build([], nums)
+        def perm(nums):
+            if(len(nums)==1):
+                return [[nums[0]]]
+            len_ = len(nums)
+            i = 0
+            ans = []
+            while(i<len_):
+                num = nums[0]
+                rest = nums[1:]
+                ans_ = perm(rest)
+                for e in ans_:
+                    #ans.append([num]+e)
+                    e.append(num)
+                    ans.append(e)
+                nums = rest + [num]
+                i+=1
+            return ans
+        
+        ans  = perm(nums)
         return ans
