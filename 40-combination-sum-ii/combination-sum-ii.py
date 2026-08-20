@@ -1,28 +1,59 @@
 class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
-        candidates.sort()
-        ans = []
-        dic = {}
-        def comb(ar, sm, ind):
-            nonlocal target
-            if(sm == target):
-                s = ""
-                for e in ar:
-                    s+=str(e)
-                if(s not in dic):
-                    ans.append(ar)
-                    dic[s] = 1
-                return
+        """
+        #i misunderstood the problem and the following implementation was to generate all unique possible collection with repeating elements that sums to target
+        nums = set(candidates)
+        nums = list(nums)
+        #print(nums)
 
-            for i in range(ind, len(candidates)):
-                e = candidates[i]
-                if(i>ind and  candidates[i-1] == candidates[i]):
-                    continue
-                if(sm+e<=target):
-                    comb(ar+[e], sm+e, i+1)
-                else:
-                    break
-            return 
+        def comb_sum(target, ind):
+            if(target == 0):
+                return [[nums[ind]]]
+            if(ind<0):
+                return []
+            
+            ans = []
+            if(target >= nums[ind]):
+                ans_ = comb_sum(target - nums[ind], ind)
+                num = nums[ind]
+                for e in ans_:
+                    e.append(num)
+                    ans.append(e)
+
+            ans += comb_sum(target, ind-1)
+
+            return ans
         
-        comb([], 0, 0)
+        ans = comb_sum(target, len(nums)-1)
         return ans
+        """
+
+        nums = candidates
+        nums.sort()
+        
+        def comb_sum(target, ind):
+            if(target == 0):
+                return set()
+            if(ind<0):
+                return set()
+            
+            ans = []
+            if(target >= nums[ind]):
+                ans_ = comb_sum(target - nums[ind], ind-1)
+                num = nums[ind]
+                for e in ans_:
+                    e.append(num)
+                    ans.append(e)
+                if(not ans_ and target == num):
+                    ans.append([num])
+            
+            i = ind-1
+            while(i>=0 and nums[i]==nums[i+1]):
+                i-=1
+                continue
+            ans_ = comb_sum(target, i)
+            ans += ans_
+            return ans
+    
+        ans = comb_sum(target, len(nums)-1)
+        return list(ans)
