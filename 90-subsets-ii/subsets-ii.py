@@ -1,17 +1,22 @@
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
         nums.sort()
-        ans = [[]]
-        dic = {}
+        def subsets(ind):
+            if(ind < 0):
+                return [[]], [[]]
+            total, local = subsets(ind-1)
+            total_, local_ = total[:], []
+            if(ind==0 or nums[ind]!=nums[ind-1]):
+                for e in total:
+                    e = e + [nums[ind]]
+                    total_.append(e)
+                    local_.append(e)
+            else:
+                for e in local:
+                    e = e + [nums[ind]]
+                    total_.append(e)
+                    local_.append(e)
+            return total_, local_
 
-        for n in nums:
-            ans_ = []
-            for ar in ans:
-                ans_.append(ar)
-                ar_ = ar+[n]
-                s = ''.join([str(i) for i in ar_])
-                if(s not in dic):
-                    dic[s] = 1
-                    ans_.append(ar_)
-            ans = ans_
+        ans, ans_ = subsets(len(nums)-1)
         return ans
