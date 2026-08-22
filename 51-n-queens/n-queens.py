@@ -1,61 +1,48 @@
 class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
+        col = set()
+        row = set()
+        pos_diag = set() #bottom_left to top_right --> r+c
+        neg_diag = set() #bottom_right to top_left --> r-c
+        points = set()
+
         ans = []
-        def build(r, dic):
-            nonlocal n
-            if(r==n):
-                ans1 = [['.']*n for _ in range(n)]
-                for r_, c_ in dic.keys():
-                    ans1[r_][c_] = 'Q'
-                ans.append(ans1)
+        def build(r):
+            #print(r, row, col, pos_diag, neg_diag, points)
+            if(r == n):
+                ans_ar = [["."]*n for _ in range(n)]
+                for (r, c) in points:
+                    ans_ar[r][c] = "Q"
+                ans_str = []
+                for rw in ans_ar:
+                    rw = "".join(rw)
+                    ans_str.append(rw)
+                ans.append(ans_str)
                 return
+            
             for c in range(n):
-                r_ = r
-                c_ = c
-                conflict = False
-                while(r_>=0):
-                    if((r_, c_) in dic):
-                        conflict = True
-                        break
-                    r_-=1
-                if(conflict):
-                    continue
-                r_ = r
-                c_ = c
-                while(r_>=0 and c_>=0):
-                    if((r_, c_) in dic):
-                        conflict = True
-                        break
-                    r_-=1
-                    c_-=1
+                if(r not in row) and (c not in col) and (r+c not in pos_diag) and (r-c not in neg_diag):
+                    row.add(r)
+                    col.add(c)
+                    pos_diag.add(r+c)
+                    neg_diag.add(r-c)
+                    points.add((r, c))
 
-                if(conflict):
-                    continue
-                r_ = r
-                c_ = c
-                while(r_>=0 and c_<n):
-                    if((r_, c_) in dic):
-                        conflict = True
-                        break
-                    r_-=1
-                    c_+=1
-                
-                if(conflict):
-                    continue
+                    build(r+1)
 
-                dic[(r, c)] = 1
-                build(r+1, dic)
-                del dic[(r, c)]
+                    row.remove(r)
+                    col.remove(c)
+                    pos_diag.remove(r+c)
+                    neg_diag.remove(r-c)
+                    points.remove((r, c))
+            return
+        
+        build(0)
+        #print(ans)
+        return ans
 
 
-        for c in range(n):
-            build(1, {(0, c):1})
 
-        ans_str = []
-        for ans_ar in ans:
-            sol = []
-            for row in ans_ar:
-                r = "".join(row)
-                sol.append(r)
-            ans_str.append(sol)
-        return ans_str
+
+
+
