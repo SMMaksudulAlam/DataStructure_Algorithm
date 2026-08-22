@@ -3,46 +3,52 @@ class Solution:
         """
         Do not return anything, modify board in-place instead.
         """
-        ln = len(board)
-        rows = {i:set() for i in range(ln)}
-        cols = {i:set() for i in range(ln)}
-        blocks = {i:set() for i in range(ln)}
+        n = len(board)
+        blocks = {x: set() for x in range(n)}
+        row = {x: set() for x in range(n)}
+        col = {x: set() for x in range(n)}
 
-        cells = deque()
-
-        for i in range(ln):
-            for j in range(ln):
-                if(board[i][j]!='.'):
-                    ch = int(board[i][j])
-                    blk = (i//3)*3 + (j//3)
-                    rows[i].add(ch)
-                    cols[j].add(ch)
-                    blocks[blk].add(ch)
+        blanks = deque([])
+        for r in range(n):
+            for c in range(n):
+                if(board[r][c] == "."):
+                    blanks.append((r, c))
                 else:
-                    cells.append((i, j))
+                    num = int(board[r][c])
+                    row[r].add(num)
+                    col[c].add(num)
+
+                    blck = (r//3)*3 + (c//3)
+                    blocks[blck].add(num)
         
+        #print(row, col, blocks, blanks)
 
         def solve():
-            i, j = cells.popleft()
-            blk = (i//3)*3 + (j//3)
-            for x in range(1, 10):
-                if(x not in rows[i] and x not in cols[j] and x not in blocks[blk]):
-                    rows[i].add(x)
-                    cols[j].add(x)
-                    blocks[blk].add(x)
-                    board[i][j] = str(x)
-                    if(not cells):
-                        return True
+            if(not blanks):
+                return True
+            
+            (r, c) = blanks.popleft()
+            for num in range(1, n+1):
+                num_str = str(num)
+                blck = (r//3)*3 + (c//3)
+                if(num not in row[r]) and (num not in col[c]) and (num not in blocks[blck]):
+                    board[r][c] = num_str
+                    row[r].add(num)
+                    col[c].add(num)
+                    blocks[blck].add(num)
+
                     solved = solve()
                     if(solved):
                         return True
                     
-                    rows[i].remove(x)
-                    cols[j].remove(x)
-                    blocks[blk].remove(x)
-                    board[i][j] = '.'
-
-            cells.appendleft((i, j))
+                    row[r].remove(num)
+                    col[c].remove(num)
+                    blocks[blck].remove(num)
+                    board[r][c] = "."
+            
+            blanks.appendleft((r, c))
             return False
-
+        
         solve()
+        return
+
