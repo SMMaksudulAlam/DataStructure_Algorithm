@@ -1,29 +1,28 @@
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
-        def is_pal(s):
-            if(s == s[::-1]):
-                return True
-            return False
+        def is_palind(i, j):
+            left = i
+            right = j
 
-        dic = {}
-        def build_ans(s):
-            ans = []
-            if(s in dic):
-                return dic[s]
-            if(not s):
+            while(left<=right):
+                if(s[left]!=s[right]):
+                    return False
+                left+=1
+                right-=1
+            return True
+
+        def build(ind):
+            if(ind == len(s)):
                 return [[]]
-            for i in range(1, len(s)+1):
-                part = s[:i]
-                if(is_pal(part)):
-                    temp_ans = build_ans(s[i:])
-                    
-                    for ans_ in temp_ans:
-                        ans.append([part]+ans_)
-            dic[s] = ans
+            ans = []
+            for i in range(ind, len(s)):
+                if(is_palind(ind, i)):
+                    temp_str = s[ind:i+1]
+                    temp_ans = build(i+1)
+                    for e in temp_ans:
+                        e = [temp_str] + e
+                        ans.append(e)
             return ans
         
-        ans = build_ans(s)
-
+        ans = build(0)
         return ans
-
-            
