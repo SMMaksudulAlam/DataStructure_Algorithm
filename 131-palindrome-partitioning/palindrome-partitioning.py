@@ -10,8 +10,11 @@ class Solution:
                 left+=1
                 right-=1
             return True
-
+        
+        dic = {}
         def build(ind):
+            if(ind in dic):
+                return dic[ind]
             if(ind == len(s)):
                 return [[]]
             ans = []
@@ -22,6 +25,7 @@ class Solution:
                     for e in temp_ans:
                         e = [temp_str] + e
                         ans.append(e)
+            dic[ind] = ans
             return ans
         
         ans = build(0)
