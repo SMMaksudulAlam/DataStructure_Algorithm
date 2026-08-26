@@ -10,20 +10,14 @@ class Solution:
 
         while(left<=right):
             mid = (left+right)//2
-            if(nums[mid]-(mid+1)<=k):
+            if(nums[mid]-(mid+1)<k): # note: we should avoid = (equal) in the conditioning, if it cuases problems.
                 ind = mid
                 left = mid+1
             else:
                 right = mid-1
         
         remain = k - (nums[ind]-(ind+1))
-        #print(ind, nums[ind], remain)
-        if(remain==0):
-            while(ind>0 and nums[ind]-nums[ind-1] == 1):
-                ind-=1
-            return nums[ind]-1
-        else:
-            return nums[ind] + remain
-        return -1
+        print(ind, nums[ind], remain)
+        return nums[ind] + remain
 
 
