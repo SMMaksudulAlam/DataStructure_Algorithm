@@ -3,6 +3,11 @@ class Solution:
         left = 0
         right = len(nums)-1
 
+        if(nums[0] == target):
+            return True
+        if(nums[-1] == target):
+            return True
+
         while(left<=right):
             mid = (left+right)//2
             if(nums[mid]==target):
