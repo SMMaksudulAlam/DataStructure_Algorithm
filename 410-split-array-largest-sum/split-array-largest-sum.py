@@ -1,32 +1,32 @@
 class Solution:
     def splitArray(self, nums: List[int], k: int) -> int:
-        def split_count(largest_sum):
-            count = 0
+        def count_subarrays(largest_sum):
+            count = 1
             sm = 0
             for n in nums:
                 if(n>largest_sum):
-                    return inf
-                if(sm+n<=largest_sum):
+                    return math.inf
+                if(n+sm<=largest_sum):
                     sm += n
                 else:
                     count+=1
                     sm = n
-            return count+1
-        
-        left = min(nums)
+            return count
+
+        left = 1
         right = sum(nums)
-
-        while(left <= right):
-            if(left == right):
-                return left
-            if(left+1==right):
-                if(split_count(left)<=k):
-                    return left
-                return right
-
+        ans = 0
+        while(left<=right):
             mid = (left+right)//2
-            if(split_count(mid)<=k):
-                right = mid
+            count = count_subarrays(mid)
+            if(count<=k):
+                ans = mid
+                right = mid-1
             else:
-                left = mid
+                left = mid+1
+
+        count = count_subarrays(ans)
+        #print(count, ans)
+        if(count <= k and len(nums)>=k):
+            return ans
         return -1
