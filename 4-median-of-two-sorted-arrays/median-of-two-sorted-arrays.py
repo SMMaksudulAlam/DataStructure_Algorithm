@@ -21,24 +21,11 @@ class Solution:
             rest = k-(mid+1)
             
             b_ind = rest-1
-            left_b = None
-            if(0<=b_ind<len_b):
-                left_b = b[b_ind]
-            elif(b_ind>=len_b):
-                left_b = math.inf
-            else:
-                left_b = -math.inf
+            left_b = b[b_ind] if b_ind>=0 else -math.inf
             
-            right_b = None
-            if(0<=b_ind+1<len_b):
-                right_b = b[b_ind+1]
-            elif(b_ind+1>=len_b):
-                right_b = math.inf
-            else:
-                right_b = -math.inf
+            right_b = b[b_ind+1] if b_ind+1<len_b else math.inf
             
             if(left_a<=right_b and left_b<=right_a):
-                #print(left_a, right_a, left_b, right_b)
                 if((len(a) + len(b))%2==1):
                     return max(left_a, left_b)
                 else: 
