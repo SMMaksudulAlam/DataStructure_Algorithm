@@ -1,46 +1,45 @@
 import heapq as hq
 class Solution:
     def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
-        m = []
-        for (s, e) in meetings:
-            hq.heappush(m, (s, e))
-
-        dic = {}
-        h = []
+        meeting_rooms = []
+        counter = {}
         for i in range(n):
-            dic[i] = 0
-            hq.heappush(h, (0, i))
-        #print(m, h, dic)
+            hq.heappush(meeting_rooms, (0, i))
+            counter[i] = 0
+        
+        meetings.sort(key = lambda x: x[0])
 
-        while(m):
-            (ms, me) = hq.heappop(m)
-            diff = me-ms
+        for meeting in meetings:
+            start_time = meeting[0]
+            end_time = meeting[1]
 
-            lst = []
-            while(h and h[0][0]<=ms):
-                (ce, cr) = hq.heappop(h)
-                lst.append((ms, cr))
-            
-            while(lst):
-                hq.heappush(h, lst.pop())
+            if(meeting_rooms[0][0]<=start_time):
+                available = []
+                while(meeting_rooms and meeting_rooms[0][0]<=start_time):
+                    element = hq.heappop(meeting_rooms)
+                    element = (element[1], element[0])
+                    hq.heappush(available, element)
 
-            (re, rr) = hq.heappop(h)
+                room_no, next_end_time = hq.heappop(available)
+                counter[room_no] += 1
+                hq.heappush(meeting_rooms, (end_time, room_no))
 
-            dic[rr]+=1
-            if(re<=ms):
-                hq.heappush(h, (me, rr))
+                while(available):
+                    element = hq.heappop(available)
+                    element = (element[1], element[0])
+                    hq.heappush(meeting_rooms, element)
+
             else:
-                hq.heappush(h, (re+diff, rr))
+                next_end_time, room_no = hq.heappop(meeting_rooms)
+                counter[room_no] += 1
+                hq.heappush(meeting_rooms, (next_end_time + (end_time - start_time), room_no))
 
-            #print(ms, me, re, rr, m, h)
-
-        #print(m, h, dic)
-        ans = []
-        for (k, v) in dic.items():
-            hq.heappush(ans, (-v, k))
-
-        return ans[0][1]
-        
-        
-        
-
+        ans = 0
+        max_count = 0
+        #print(meetings)
+        #print(counter)
+        for key, val in counter.items():
+            if(max_count<val):
+                max_count = val
+                ans = key
+        return ans
