@@ -12,6 +12,7 @@ class Solution:
                 return True
         return False
         """
+        """
         max_reach = 0
         curr = 0
         next_iteration = True
@@ -27,6 +28,12 @@ class Solution:
                 next_iteration = True
                 max_reach = next_max_reach
         return False
+        """
 
-
+        max_reach = 0
+        for i, e in enumerate(nums):
+            if(i>max_reach):
+                return False
+            max_reach = max(max_reach, i + e)
+        return True
         
