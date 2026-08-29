@@ -1,15 +1,12 @@
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
-        limit = 0
-        i = 0
-        while(True):
-            if(limit>=len(nums)-1):
+        ans = [False]*len(nums)
+        ans[0] = True
+        for i, e in enumerate(nums):
+            if(ans[i] == True):
+                for j in range(e):
+                    if(i+j+1 < len(nums)):
+                        ans[i+j+1] = True
+            if(ans[-1] == True):
                 return True
-            next_limit = limit
-            while(i<=limit):
-                next_limit = max(next_limit, i+nums[i])
-                i+=1
-            if(limit==next_limit):
-                return False
-            limit = next_limit
         return False
