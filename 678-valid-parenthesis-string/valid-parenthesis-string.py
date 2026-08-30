@@ -1,5 +1,6 @@
 class Solution:
     def checkValidString(self, s: str) -> bool:
+        """
         dp = {}
         def check(left, right, ind):
             if(right>left):
@@ -24,3 +25,31 @@ class Solution:
         
         ans = check(0, 0, 0)
         return ans
+        """
+        asteric = []
+        left = []
+        right = []
+        for i, ch in enumerate(s):
+            if(ch == '('):
+                left.append(i)
+            elif(ch == '*'):
+                asteric.append(i)
+            else:
+                if(left):
+                    left.pop()
+                elif(asteric):
+                    asteric.pop()
+                else:
+                    return False
+
+        while(left and asteric):
+            if(left[-1]<asteric[-1]):
+                left.pop()
+                asteric.pop()
+            else:
+                return False
+        if(left):
+            return False
+            
+        return True
+            
