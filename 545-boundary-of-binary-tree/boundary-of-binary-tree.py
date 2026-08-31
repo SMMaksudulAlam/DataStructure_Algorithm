@@ -7,7 +7,7 @@
 class Solution:
     def boundaryOfBinaryTree(self, root: Optional[TreeNode]) -> List[int]:
         """
-        # this is the code on assumption of left/right most nodes of each level are on left/right boundary.
+        # this is the code on assumption of left/right most nodes of each level are on left/right boundary. But according to the definition, for the non-leaf nodes even though they are left/right most nodes of a level, to be on boundary, their parents also are needed to be on boundary. So, the following code produces error in some test
         left_level = set()
         left = []
 
@@ -50,9 +50,10 @@ class Solution:
         
         traverse_left(root.left, 1)
         traverse_right(root.right, 1)
+        print(left, right)
         return [root.val] + left + right[::-1]
         """
-
+        
         # definition of boundary in the question is very very very important. assuming the left/right most node on left/right boundary is not aligned to the definition
         left = []
         def traverse_left(root, on_left_boundary):
