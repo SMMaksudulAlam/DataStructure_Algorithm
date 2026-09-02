@@ -11,7 +11,7 @@ class Solution:
         """
         
         def flatten_(root):
-            if(root.left == None and root.right == None):
+            if(not root):
                 return root, root
             
             left = root.left
@@ -33,9 +33,6 @@ class Solution:
                 tail = right_tail
             
             return head, tail
-
-        if(not root):
-            return root
         
         head, tail = flatten_(root)
         return head
