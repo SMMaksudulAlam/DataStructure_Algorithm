@@ -23,7 +23,6 @@ class Solution:
             neigh = graph.get(src, [])
 
             for (ngh, p) in neigh:
-                if(stp+1<=k):
-                    hq.heappush(h, (price+p, stp+1, ngh))
+                hq.heappush(h, (price+p, stp+1, ngh))
         
         return -1
