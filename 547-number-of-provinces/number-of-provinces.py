@@ -47,6 +47,7 @@ class Solution:
         return ans
         """
 
+        """
         #DFS
         length = len(isConnected)
         visited = set()
@@ -66,5 +67,29 @@ class Solution:
                 count+=1
                 traverse(i)
         return count
+        """
 
+        
+        #BFS
+        length = len(isConnected)
+        visited = set()
+        count = 0
+
+        def traverse(i):
+            q = deque([i])
+            visited.add(i)
+            while(q):
+                i = q.popleft()
+                for j in range(length):
+                    if(isConnected[i][j] == 1 and j not in visited):
+                        visited.add(j)
+                        q.append(j)
+            return
+
+        count = 0
+        for i in range(length):
+            if(i not in visited):
+                count+=1
+                traverse(i)
+        return count
                 
