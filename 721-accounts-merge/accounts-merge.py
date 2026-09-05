@@ -12,6 +12,12 @@ class uf:
         while(cur.parent != cur):
             cur = cur.parent
         parent = cur
+
+        cur = self
+        while(cur!=parent):
+            temp = cur.parent
+            cur.parent = parent
+            cur = temp
         return parent
 
 class Solution:
