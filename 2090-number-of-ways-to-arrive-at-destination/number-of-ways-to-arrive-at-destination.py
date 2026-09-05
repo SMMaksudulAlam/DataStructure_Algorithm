@@ -1,42 +1,32 @@
 import heapq as hq
 class Solution:
     def countPaths(self, n: int, roads: List[List[int]]) -> int:
-        graph = {}
-        for u, v, t in roads:
-            if(u not in graph):
-                graph[u] = []
-            if(v not in graph):
-                graph[v] = []
-            
-            graph[u].append((v, t))
-            graph[v].append((u, t))
-        
-        dic = {0: (0, 1)}
+        graph = {i: set() for i in range(n)}
+        for (s, d, t) in roads:
+            graph[s].add((d, t))
+            graph[d].add((s, t))
+
+        time = {0:0}
+        ways = {0:1}
+        mod = 10**9 + 7
         h = []
         hq.heappush(h, (0, 0))
-        mod = 10**9+7
 
         while(h):
-            time, u = hq.heappop(h)
-            if(time != dic[u][0]):
+            (cost, nde) = hq.heappop(h)
+            if(nde in time and time[nde]<cost):
                 continue
-            path_count = dic[u][1]
-
-            lst = graph.get(u, [])
-            for v, t in lst:
-                tme = t+time
-                if(v not in dic):
-                    dic[v] = (tme, path_count)
-                    hq.heappush(h, (tme, v))
+            neigh = graph[nde]
+            for (d, t) in neigh:
+                if(cost + t < time.get(d, math.inf)):
+                    hq.heappush(h, (cost+t, d))
+                    time[d] = cost+t
+                    ways[d] = ways[nde]
+                elif(cost + t == time.get(d, math.inf)):
+                    ways[d] = (ways[d] + ways[nde])%mod
                 else:
-                    if(dic[v][0]<tme):
-                        pass
-                    elif(dic[v][0]==tme):
-                       dic[v] = (tme, (path_count+dic[v][1])%mod)
-                    else:
-                        dic[v] = (tme, path_count)
-                        hq.heappush(h, (tme, v))
+                    pass
+        #print(time, ways)
+        return ways.get(n-1, 0)
             
-        ans = dic.get(n-1, [])
-        return ans[-1] if ans else -1
-        
+            
