@@ -1,3 +1,14 @@
+class uf:
+    def __init__(self, val):
+        self.val = val
+        self.parent = self
+        self.count = 1
+    
+    def find(self):
+        while(self.parent != self):
+            self = self.parent
+        return self
+
 class Solution:
     def findCircleNum(self, isConnected: List[List[int]]) -> int:
         """
@@ -69,7 +80,7 @@ class Solution:
         return count
         """
 
-        
+        """
         #BFS
         length = len(isConnected)
         visited = set()
@@ -92,4 +103,30 @@ class Solution:
                 count+=1
                 traverse(i)
         return count
-                
+        """
+
+        #union-find
+        nodes = {}
+        parents = set()
+        length = len(isConnected)
+
+        for i in range(length):
+            nde = uf(i)
+            nodes[i] = nde
+            parents.add(i)
+        
+        for i in range(length):
+            for j in range(length):
+                if(isConnected[i][j] == 1):
+                    pi = nodes[i].find()
+                    pj = nodes[j].find()
+                    if(pi != pj):
+                        if(pi.count >= pj.count):
+                            pi.count += pj.count
+                            parents.remove(pj.val)
+                            pj.parent = pi
+                        else:
+                            pj.count += pi.count
+                            parents.remove(pi.val)
+                            pi.parent = pj
+        return len(parents)
