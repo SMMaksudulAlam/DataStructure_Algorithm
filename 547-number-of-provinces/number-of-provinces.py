@@ -29,6 +29,7 @@ class Solution:
         return ans
         """
 
+        """
         visited = set()
         ans = 0
         ln = len(isConnected)
@@ -44,4 +45,26 @@ class Solution:
                 ans+=1
                 traverse_province(k)
         return ans
+        """
+
+        #DFS
+        length = len(isConnected)
+        visited = set()
+        def traverse(i):
+            if(i in visited):
+                return
+            
+            visited.add(i)
+            for j in range(length):
+                if(isConnected[i][j] == 1):
+                    traverse(j)
+            return 
+        
+        count = 0
+        for i in range(length):
+            if(i not in visited):
+                count+=1
+                traverse(i)
+        return count
+
                 
