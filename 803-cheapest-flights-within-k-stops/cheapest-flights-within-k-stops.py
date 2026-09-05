@@ -23,7 +23,7 @@ class Solution:
             neigh = graph.get(src, [])
 
             for (ngh, p) in neigh:
-                if(((ngh, stp+1) not in visited) and stp+1<=k):
+                if(stp+1<=k):
                     hq.heappush(h, (price+p, stp+1, ngh))
         
         return -1
