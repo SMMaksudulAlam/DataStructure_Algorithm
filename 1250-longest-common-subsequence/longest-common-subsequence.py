@@ -65,11 +65,12 @@ class Solution:
                 return dp[(ind1, ind2)]
             if(ind1<0 or ind2<0):
                 return 0
-            ans = 0
+            ans_match, ans_no_match = 0, 0
             if(text1[ind1] == text2[ind2]):
-                ans = 1 + LCS(ind1-1, ind2-1)
-        
-            ans = max(ans, LCS(ind1, ind2-1), LCS(ind1-1, ind2))
+                ans_match = 1 + LCS(ind1-1, ind2-1)
+            else:
+                ans_no_match = max(LCS(ind1, ind2-1), LCS(ind1-1, ind2))
+            ans = max(ans_match, ans_no_match)
             dp[(ind1, ind2)] = ans
             return ans
 
