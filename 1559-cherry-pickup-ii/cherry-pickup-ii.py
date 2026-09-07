@@ -1,32 +1,32 @@
 class Solution:
     def cherryPickup(self, grid: List[List[int]]) -> int:
+        row = len(grid)
+        col = len(grid[0])
         dp = {}
-        row = len(grid)-1
-        col = len(grid[0])-1
+        
+        def traverse(left_ind, right_ind, r):
+            if((left_ind, right_ind, r) in dp):
+                return dp[(left_ind, right_ind, r)]
+            if(r>=row):
+                return 0
+            left = 0
+            right = 0
 
-        dir = [-1, 0, 1]
+            if(left_ind != right_ind):
+                left = grid[r][left_ind]
+            right = grid[r][right_ind]
 
-        def collect(rw, cl1, cl2):
-            if((rw, cl1, cl2) in dp):
-                return dp[(rw, cl1, cl2)]
-            res = 0
-            if(cl1 == cl2):
-                res = grid[rw][cl1]
-            else:
-                res = grid[rw][cl1] + grid[rw][cl2]
-
-            if(rw == row):
-                dp[(rw, cl1, cl2)] = res
-                return res
-            else:
-                mx = -inf
-                for dx1 in dir:
-                    if(0 <= cl1+dx1 <= col):
-                        for dx2 in dir:
-                            if(0 <= cl2+dx2 <= col):
-                                mx = max(mx, collect(rw+1, cl1+dx1, cl2+dx2))
-
-                dp[(rw, cl1, cl2)] = res + mx
-                return res + mx
+            temp_ans = 0
+            for i in [-1, 0, 1]:
+                left_ind_next = left_ind + i
+                if(0<=left_ind_next<col):
+                    for j in [-1, 0, 1]:
+                        right_ind_next = right_ind + j
+                        if(0<=right_ind_next<col):
+                            temp_ans = max(temp_ans, traverse(left_ind_next, right_ind_next, r+1))
             
-        return collect(0, 0, col)
+            dp[(left_ind, right_ind, r)] = left+right+temp_ans
+            return left+right+temp_ans
+
+        ans = traverse(0, col-1, 0)
+        return ans
