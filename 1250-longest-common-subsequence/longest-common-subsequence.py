@@ -2,7 +2,7 @@ class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         #The trick "Only consider character that contribute to the length of LCS" at building time does not do its job. For example, a='aabbb', b='baa'. The returned length is correct (2), but the printed string is 'ba' — and 'ba' is not a subsequence of a='aabbb'. So the best option is to do fill the dp table first, then backtrack.
 
-
+        """
         lcs_str = "" #To print the lcs
         track_len = 1
         dp = {}
@@ -29,8 +29,10 @@ class Solution:
         ans = LCS(len(text1)-1, len(text2)-1)
         print(lcs_str)
         return ans
-        
         """
+
+        """
+
         if(len(text1)>len(text2)):
             text1, text2 = text2, text1
 
@@ -57,3 +59,19 @@ class Solution:
         print(lcs_str)
         return prev[-1]
         """
+        dp = {}
+        def LCS(ind1, ind2):
+            if((ind1, ind2) in dp):
+                return dp[(ind1, ind2)]
+            if(ind1<0 or ind2<0):
+                return 0
+            ans = 0
+            if(text1[ind1] == text2[ind2]):
+                ans = 1 + LCS(ind1-1, ind2-1)
+        
+            ans = max(ans, LCS(ind1, ind2-1), LCS(ind1-1, ind2))
+            dp[(ind1, ind2)] = ans
+            return ans
+
+        ans = LCS(len(text1)-1, len(text2)-1)
+        return ans
