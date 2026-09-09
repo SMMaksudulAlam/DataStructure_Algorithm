@@ -10,10 +10,8 @@ class Solution:
         order = 1
         ans = []
         def traverse(nde, parent):
-            #print(parent, nde, rank)
             nonlocal order
             if(nde in visited):
-                #print("visited the node:", nde)
                 return rank[nde]
             visited.add(nde)
             rank[nde] = order
@@ -26,10 +24,8 @@ class Solution:
                     continue
                 child_val = traverse(n, nde)
                 if(child_val > rank[nde]):
-                    #print("inserting: ", (nde, n))
                     ans.append([nde, n])
                 ret_val = min(ret_val, child_val)    
-            #print("returning", nde, rank, ret_val)
             rank[nde] = ret_val             
             return ret_val
         
