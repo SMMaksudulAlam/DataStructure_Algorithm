@@ -1,5 +1,6 @@
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
+        """
         l2r = [0]*len(nums)
         r2l = [0]*len(nums)
         
@@ -19,3 +20,18 @@ class Solution:
         ans.append(l2r[-2])
 
         return ans
+        """
+        
+        ans = [0]*len(nums)
+        pref = 1
+        for i in range(len(nums)):
+            ans[i] = pref
+            pref *= nums[i]
+        
+        suff = 1
+        for i in range(len(nums)-1, -1, -1):
+            ans[i] *= suff
+            suff *= nums[i]
+        
+        return ans
+
