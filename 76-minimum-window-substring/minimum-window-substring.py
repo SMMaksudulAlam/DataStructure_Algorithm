@@ -1,34 +1,22 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        dic = {}
-        for e in t:
-            dic[e] = dic.get(e, 0) + 1
-        
-        left = 0
-        found = False
-        ans = s
-        counter_zero_feq = 0
-        for right in range(len(s)):
-            ch = s[right]
-            if(ch in dic):
-                dic[ch] -= 1
-                if(dic[ch] == 0):
-                    counter_zero_feq += 1
-            
-            while(counter_zero_feq == len(dic.keys())):
-                length = right - left + 1
-                found = True
-                if(len(ans)>length):
-                    ans = s[left:right+1]
-                ch = s[left]
-                if(ch in dic):
-                    dic[ch] += 1
-                    if(dic[ch] == 1):
-                        counter_zero_feq -= 1
-                left+=1
-
-        if(found):
-            return ans
-        else:
+        if(len(t)>len(s)):
             return ""
-
+        
+        tracker_t = {}
+        for ch in t:
+            tracker_t[ch] = tracker_t.get(ch, 0) + 1
+        
+        ans = s+'X'
+        left = 0
+        for right, ch in enumerate(s):
+            if(ch in tracker_t):
+                tracker_t[ch] -= 1
+            
+            while(max(tracker_t.values())<=0):
+                if(right-left+1 < len(ans)):
+                    ans = s[left:right+1]
+                if(s[left] in tracker_t):
+                    tracker_t[s[left]] += 1
+                left+=1
+        return ans if len(ans)<=len(s) else ""
