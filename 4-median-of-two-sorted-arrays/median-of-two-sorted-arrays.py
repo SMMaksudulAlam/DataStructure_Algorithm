@@ -11,7 +11,7 @@ class Solution:
         len_b = len(b)
         
         left = -1
-        right = len_a
+        right = len_a-1
         
         while(left<=right):
             mid = (left+right)//2
