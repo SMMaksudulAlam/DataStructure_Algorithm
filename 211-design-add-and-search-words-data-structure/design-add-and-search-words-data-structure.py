@@ -1,46 +1,43 @@
 class WordDictionary:
 
     def __init__(self):
-        self.dic = {}
+        self.trie = {}
 
     def addWord(self, word: str) -> None:
-        dic = self.dic
+        dic = self.trie
         for ch in word:
             if(ch not in dic):
                 dic[ch] = {}
             dic = dic[ch]
-        dic['end'] = 1
-    
-    def search_(self, word: str, dic) -> bool:
-        for i, ch in enumerate(word):
-            if(ch == '.'):
-                for ascii in range(ord('a'), ord('z')+1):
-                    if(chr(ascii) in dic):
-                        res = self.search_(word[i+1:], dic[chr(ascii)])
-                        if(res):
-                            return True
-                return False
-            elif(ch not in dic):
-                return False
-            else:
-                dic = dic[ch]
-        if('end' in dic):
-            return True
-        return False
-
+        dic["end"] = word
+        return
 
     def search(self, word: str) -> bool:
-        dic = self.dic
-        for i, ch in enumerate(word):
-            if(ch == '.'):
-                return self.search_(word[i:], dic)
-            elif(ch not in dic):
+        dic = self.trie
+
+        def srch(dic, w):
+            if(not dic):
                 return False
+            if(not w):
+                if("end" in dic):
+                    return True
+                return False
+            
+            if(w[0] != '.'):
+                if(w[0] not in dic):
+                    return False
+                return srch(dic[w[0]], w[1:])
             else:
-                dic = dic[ch]
-        if('end' in dic):
-            return True
-        return False
+                ans = False
+                for key, val in dic.items():
+                    if(key == "end"):
+                        continue
+                    ans = ans or srch(val, w[1:])
+                    if(ans):
+                        return ans
+                return ans
+
+        return srch(dic, word)
 
 
 
