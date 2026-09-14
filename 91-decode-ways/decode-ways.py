@@ -1,24 +1,44 @@
 class Solution:
     def numDecodings(self, s: str) -> int:
-        ans = [0]*(len(s))
-        if(s[0]=='0'):
+        if(s[0] == '0'):
             return 0
-        ans[0]=1
-        for i in range(1, len(s)):
-            if(s[i]!='0'):
-                ans[i]=ans[i-1]
-                if('10'<=s[i-1:i+1]<='26'):
-                    if(i-2>=0):
-                        ans[i]+=ans[i-2]
+        
+        is_feasible = True
+        dp = {}
+        def count(ind):
+            if(ind in dp):
+                return dp[ind]
+            nonlocal is_feasible
+            if(ind==0):
+                return 1
+            if(ind == 1):
+                num = int(s[:2])
+                if(s[ind]=='0'):
+                    if(num == 10 or num == 20):
+                        return 1
                     else:
-                        ans[i]+=1
-            else:
-                if(s[i-1] not in ['1', '2']):
-                    return 0
+                        is_feasible = False
                 else:
-                    if(i-2>=0):
-                        ans[i]+=ans[i-2]
+                    if(11<=num<=26):
+                        return 2
                     else:
-                        ans[i]+=1
-        #print(ans)
-        return ans[-1]
+                        return 1
+            
+            ans = 0
+            num = int(s[ind-1:ind+1])
+            if(s[ind]=='0'):
+                if(num == 10 or num == 20):
+                    ans += count(ind-2)
+                else:
+                    is_feasible = False
+            else:
+                ans += count(ind-1)
+                if(11<=num<=26):
+                    ans += count(ind-2)
+            dp[ind] = ans
+            return ans
+            
+        ans = count(len(s)-1)
+        if(is_feasible == False):
+            return 0
+        return ans
