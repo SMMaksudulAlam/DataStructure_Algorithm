@@ -1,22 +1,25 @@
 class Solution:
     def findItinerary(self, tickets: List[List[str]]) -> List[str]:
-        dic = {}
-        for d, a in tickets:
-            if(d not in dic):
-                dic[d] = []
-            dic[d].append(a)
+        flights = {}
+        for (src, des) in tickets:
+            if(src not in flights):
+                flights[src] = []
+            flights[src].append(des)
+        
+        for val in flights.values():
+            val.sort(reverse = True)
 
-        for k in dic.keys():
-            dic[k].sort()
-            dic[k] = deque(dic[k])
-
+        #print(flights)
         ans = []
-
-        def dfs(d):
-            if(d in dic):
-                while(dic[d]):
-                    dfs(dic[d].popleft())
-            ans.append(d)
+        def dfs(src):
+            if(src not in flights):
+                ans.append(src)
+                return
+            while(flights[src]):
+                src_ = flights[src].pop()
+                dfs(src_)
+            ans.append(src)
+            return
         
         dfs("JFK")
 
