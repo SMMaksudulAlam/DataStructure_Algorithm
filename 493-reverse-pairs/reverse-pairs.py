@@ -11,32 +11,34 @@ class Solution:
             temp_ans = 0
 
             while(l_i<l_len and r_i<r_len):
-                l_e = left[l_i]
-                r_e = right[r_i]
-                if(l_e <= 2*r_e):
-                    temp_ans += r_i #3
-                    l_i += 1
+                l_num = left[l_i]
+                r_num = right[r_i]
+                if(l_num > r_num*2):
+                    temp_ans += (l_len - l_i)
+                    r_i += 1
                 else:
-                    while(r_i<r_len and l_e > 2*right[r_i]):
-                        r_i += 1
-            if(l_i<l_len):
-                temp_ans += ((l_len-l_i)*r_len) #6
-            
+                    l_i += 1
             ans += temp_ans
-            ar = [] #[1, 8, 18, 24], [3, 7, 10]
+            
+            m_arr = []
             l_i = 0
             r_i = 0
-            while(l_i<l_len or r_i<r_len): 
-                l_e = left[l_i] if l_i<l_len  else inf
-                r_e = right[r_i] if r_i<r_len else inf
-
-                if(l_e <= r_e):
-                    ar.append(l_e)
-                    l_i += 1
+            while(l_i<l_len and r_i<r_len):
+                l_num = left[l_i]
+                r_num = right[r_i]
+                if(l_num <= r_num):
+                    m_arr.append(l_num)
+                    l_i+=1
                 else:
-                    ar.append(r_e)
-                    r_i += 1
-            return ar
+                    m_arr.append(r_num)
+                    r_i+=1
+            if(l_i<l_len):
+                m_arr += left[l_i:]
+            if(r_i<r_len):
+                m_arr += right[r_i:]
+
+            return m_arr
+
 
         #ar = merge([1, 8, 18, 24], [3, 7, 10])
         #print(ans, ar)
