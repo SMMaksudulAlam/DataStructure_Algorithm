@@ -1,20 +1,23 @@
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
-        s = sum(nums)
-        if(s%2==1):
-            return False
-        
-        half = s//2
+        @lru_cache(maxsize=None)
+        def dfs(nums: Tuple[int], n: int, subset_sum: int) -> bool:
+            # Base cases
+            if subset_sum == 0:
+                return True
+            if n == 0 or subset_sum < 0:
+                return False
+            result = (dfs(nums, n - 1, subset_sum - nums[n - 1])
+                    or dfs(nums, n - 1, subset_sum))
+            return result
 
-        dp = [False]*(half+1)
-        dp[0] = True
-        for num in nums:
-            dp_ = [False]*(half+1)
-            dp_[0] = True
-            for ind in range(1, half+1):
-                dp_[ind] = dp[ind]
-                if(ind-num>=0):
-                    dp_[ind] = dp_[ind] or dp[ind-num]
-            dp = dp_
-        
-        return dp[-1]
+        # find sum of array elements
+        total_sum = sum(nums)
+
+        # if total_sum is odd, it cannot be partitioned into equal sum subsets
+        if total_sum % 2 != 0:
+            return False
+
+        subset_sum = total_sum // 2
+        n = len(nums)
+        return dfs(tuple(nums), n - 1, subset_sum)
