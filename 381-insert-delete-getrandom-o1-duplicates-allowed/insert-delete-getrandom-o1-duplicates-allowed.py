@@ -21,25 +21,16 @@ class RandomizedCollection:
         if(val not in self.dic):
             return False
         
-        val_ind = None
-        for ind in self.dic[val]:
-            val_ind = ind
-            break
+        val_ind = self.dic[val].pop()
 
         last_elem = self.lst[-1]
         last_ind = len(self.lst) - 1
 
-        if(last_elem != val):
-            self.lst[val_ind], self.lst[last_ind] = self.lst[last_ind], self.lst[val_ind]
-            self.dic[last_elem].remove(last_ind)
-            self.dic[last_elem].add(val_ind)
+        self.lst[val_ind], self.lst[last_ind] = self.lst[last_ind], self.lst[val_ind]
+        self.lst.pop()
 
-            self.lst.pop()
-            self.dic[val].remove(val_ind)
-
-        else:
-            self.lst.pop()
-            self.dic[val].remove(last_ind)
+        self.dic[last_elem].add(val_ind)
+        self.dic[last_elem].discard(last_ind)
 
         if(not self.dic[val]):
             del self.dic[val]
