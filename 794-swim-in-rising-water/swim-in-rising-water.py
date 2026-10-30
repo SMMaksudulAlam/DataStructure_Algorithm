@@ -1,27 +1,27 @@
 import heapq as hq
 class Solution:
     def swimInWater(self, grid: List[List[int]]) -> int:
+        dir = [(-1, 0), (1, 0), (0, 1), (0, -1)]
         h = []
-        track = set()
-
-        hq.heappush(h, (grid[0][0], 0, 0))
-        dir = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        visited = set()
+        h.append((grid[0][0], 0, 0))
 
         ln = len(grid)
 
         while(h):
-            t, i, j = hq.heappop(h)
-            if((i, j) in track):
+            cst, i, j = hq.heappop(h)
+            if(i==ln-1 and j==ln-1):
+                return cst
+            if((i, j) in visited):
                 continue
             
-            if(i == ln-1 and j==ln-1):
-                return t
-            track.add((i, j))
+            visited.add((i,j))
 
-            for dx, dy in dir:
-                x = dx+i
-                y = dy+j
-                if(0<=x<ln and 0<=y<ln):
-                    if((x, y) not in track):
-                        hq.heappush(h, ((max(t, grid[x][y])), x, y))
+            for di, dj in dir:
+                i_ = di+i
+                j_ = dj+j
+                if(0<=i_<ln and 0<=j_<ln):
+                    if((i_, j_) not in visited):
+                        hq.heappush(h, (max(cst, grid[i_][j_]), i_, j_))
+        
         return -1
