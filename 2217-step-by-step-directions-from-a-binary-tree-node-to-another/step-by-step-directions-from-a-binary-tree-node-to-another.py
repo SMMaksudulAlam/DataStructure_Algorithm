@@ -6,7 +6,7 @@
 #         self.right = right
 class Solution:
     def getDirections(self, root: TreeNode | None, startValue: int, destValue: int) -> str:
-        
+        """
         graph = {}
         def dfs(root):
             if(not root):
@@ -50,3 +50,39 @@ class Solution:
                         visited.add(n)
             q = q_
         return ""
+        """
+
+        #it works. the following one is just another approach by determining the start_path and end_path individually
+
+        def dfs(root, val):
+            if(not root):
+                return False, ""
+            
+            if(root.val == val):
+                return True, ""
+            
+            left, s = dfs(root.left, val)
+            if(left):
+                return True, s+'L' #will reverse letter
+            
+            right, s = dfs(root.right, val)
+            if(right):
+                return True, s+'R' #will reverse letter
+            
+            return False, ""
+        
+        start, start_path = dfs(root, startValue)
+        start_path = start_path[::-1]
+        
+        dest, dest_path = dfs(root, destValue)
+        dest_path = dest_path[::-1]
+
+        i = 0
+        mini_length = min(len(start_path), len(dest_path))
+
+        while(i<mini_length and start_path[i] == dest_path[i]):
+            i+=1
+        
+        ans = "U"*(len(start_path)-i) + dest_path[i:]
+        return ans
+
