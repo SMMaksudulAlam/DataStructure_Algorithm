@@ -1,5 +1,6 @@
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
+        """
         def perm(nums):
             if(len(nums)==1):
                 return [[nums[0]]]
@@ -20,3 +21,27 @@ class Solution:
         
         ans  = perm(nums)
         return ans
+        """
+
+        #trying naive backtracking, all possible arrangements.
+
+        used = [False]*len(nums)
+
+        def perm():
+            if(all(used)):
+                return [[]]
+            
+            ans = []
+            for i in range(len(nums)):
+                if(not used[i]):
+                    used[i] = True
+                    n = nums[i]
+                    ans_= perm()
+                    for e in ans_:
+                        e.append(n)
+                        ans.append(e)
+                    used[i] = False
+            return ans
+
+        return perm()
+
