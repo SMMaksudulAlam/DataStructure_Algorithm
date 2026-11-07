@@ -42,7 +42,7 @@ class Solution:
 
         #it was close, 162/164 testcases passed
         """
-
+        """
         sm = sum(nums)
         if(sm%k != 0):
             return False
@@ -54,6 +54,7 @@ class Solution:
             #why the TC -> O(k*2^N) instead of O(k*target*2^N)?
             #because, here, 'sm' is determined by count and used. so, it has no impact on TC
             #sm = sum(used numbers in nums) - count*target --> target is equal for all, makes it conveninet
+            ### same should happen to count, used it-self should be enought as a key
             key = ""
             for e in used:
                 key += str(e) 
@@ -78,6 +79,48 @@ class Solution:
                     used[i] = False
 
             dp[key] = False
+            return False
+
+        return partition(0, 1)
+        """
+
+        #trying with bit-mask
+        sm = sum(nums)
+        if(sm%k != 0):
+            return False
+        target = sm // k
+
+        full = 0
+        for i in range(len(nums)):
+            full |= 1 << i
+        
+        mask = 0
+
+        dp = {}
+
+        def partition(sm, count):
+            nonlocal mask
+            if(mask in dp):
+                return dp[mask]
+
+            if(sm == target):
+                if(count == k and mask == full):
+                    return True
+                else:
+                    return partition(0, count+1)
+
+            if(mask == full):
+                return False
+            
+            for i in range(len(nums)):
+                if(mask & (1 << i) == 0):
+                    mask |= (1 << i)
+                    if(sm + nums[i] <= target):
+                        if(partition(sm + nums[i], count)):
+                            return True
+                    mask ^= (1 << i)
+
+            dp[mask] = False
             return False
 
         return partition(0, 1)
