@@ -51,14 +51,16 @@ class Solution:
         dp = {}
 
         def partition(sm, count):
+            #why the TC -> O(k*2^N) instead of O(k*target*2^N)?
+            #because, here, 'sm' is determined by count and used. so, it has no impact on TC
+            #sm = sum(used numbers in nums) - count*target --> target is equal for all, makes it conveninet
             key = ""
             for e in used:
                 key += str(e) 
-            key += " "+str(sm)+" "+str(count)
+            key += " "+str(count)
             if(key in dp):
                 return dp[key] #i returned dp only
             
-
             if(sm == target):
                 if(count == k and all(used)):
                     return True
