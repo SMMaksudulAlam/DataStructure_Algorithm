@@ -45,12 +45,12 @@ class Solution:
             sim_score = master.guess(w)
             track_score[w] = sim_score
             if(sim_score == 6):
-                return True
+                return
             
             index = ind[w]
             next_set = dic[index].get(sim_score, set())
             if(not next_set):
-                return False
+                return
             for next_w in next_set:
                 if(next_w == p):
                     continue
@@ -61,9 +61,6 @@ class Solution:
                         break
                 if(all_matched):
                     return dfs(next_w, w)
-            return False
+            return
 
-        if(dfs(words[0], "")):
-            return "You guessed the secret word correctly."
-        
-        return "Either you took too many guesses, or you did not find the secret word."
+        dfs(words[0], "")
