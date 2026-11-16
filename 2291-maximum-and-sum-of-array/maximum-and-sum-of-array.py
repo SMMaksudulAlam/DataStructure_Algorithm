@@ -116,9 +116,15 @@ class Solution:
         """
 
         
-        @lru_cache(None)
-        def optimize_sum(num_ind, mask):
+        #in the previous solution, i masked on the numbers. for the current slot, i also needed to track the count of elements so far in the current slot. thus got TLE
+        #in the following, i rather maked on the slots. i know, i will need to exhaust the number in nums. so, maybe it is good decision to send them in any possible slot that has open space.
 
+
+        #@lru_cache(None) # @lru_chche --> by defauld chache 128 state. @lru_cache(None) has unlimited bound
+        dp = {}
+        def optimize_sum(num_ind, mask):
+            if((num_ind, mask) in dp):
+                return dp[(num_ind, mask)]
             if(num_ind == len(nums)):
                 return 0
 
@@ -130,6 +136,7 @@ class Solution:
                     mask_tuple = tuple(mask_array)
                     ans = max(ans, (nums[num_ind] & (i+1)) + optimize_sum(num_ind+1, mask_tuple))
 
+            dp[(num_ind, mask)] = ans
             return ans
 
         mask = tuple([2]*numSlots)
