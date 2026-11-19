@@ -1,5 +1,6 @@
 class Solution:
     def minArea(self, image: list[list[str]], x: int, y: int) -> int:
+        """
         high_r = x
         low_r = x
         high_c = y
@@ -43,4 +44,84 @@ class Solution:
         area = length * width
 
         return area
-            
+
+        #TC --> O(m*n)
+        """
+
+        row = len(image)
+        col = len(image[0])
+
+        def row_has_black(r):
+            for c in range(col):
+                if(image[r][c] == "1"):
+                    return True
+            return False
+        
+        def col_has_black(c):
+            for r in range(row):
+                if(image[r][c] == "1"):
+                    return True
+            return False
+        
+        high_r = x
+        low_r = x
+        high_c = y
+        low_c = y
+
+        # search_left of y [0 -- y] --> low_col
+        left = 0
+        right = y
+
+        while(left<=right):
+            mid = (left+right)//2
+            if(col_has_black(mid)):
+                low_c = mid
+                right = mid - 1
+            else:
+                left = mid + 1
+        
+
+        # search_right of y [y -- col-1] --> high_col
+        left = y
+        right = col-1
+
+        while(left<=right):
+            mid = (left+right)//2
+            if(col_has_black(mid)):
+                high_c = mid
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+
+        # search_top of x [0 -- x] --> low_row
+        left = 0
+        right = x
+
+        while(left<=right):
+            mid = (left+right)//2
+            if(row_has_black(mid)):
+                low_r = mid
+                right = mid - 1
+            else:
+                left = mid + 1
+        
+
+        # search_down of x [x -- row-1] --> high_row
+        left = x
+        right = row-1
+
+        while(left<=right):
+            mid = (left+right)//2
+            if(row_has_black(mid)):
+                high_r = mid
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        
+        length = high_r - low_r + 1
+        width = high_c - low_c + 1
+        area = length * width
+
+        return area
